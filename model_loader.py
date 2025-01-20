@@ -7,7 +7,14 @@ from ultralytics import YOLO
 from config import CONFIG  # Importing config for paths
 
 # Function to download LoRA weights from the URL
+import os
+
+# Function to download LoRA weights from the URL
 def download_lora_weights(url, save_path):
+    folder = os.path.dirname(save_path)  # Get the folder path
+    if not os.path.exists(folder):  # Check if folder exists
+        os.makedirs(folder)  # Create the folder if it doesn't exist
+
     print(f"Downloading LoRA weights from: {url}")
     response = requests.get(url)
     if response.status_code == 200:
