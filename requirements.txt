@@ -1,0 +1,8 @@
+torch
+diffusers
+safetensors
+ultralytics
+rembg
+gradio
+Pillow
+numpy
