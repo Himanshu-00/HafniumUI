@@ -29,7 +29,7 @@ def setup_interface():
         outputs=gr.Image(type="pil")  # Output as an image
     )
 
-    interface.launch()
+    interface.launch(share=True)
 
 if __name__ == "__main__":
     setup_interface()
