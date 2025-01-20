@@ -1,3 +1,4 @@
+import os
 import torch
 import requests
 from diffusers import DiffusionPipeline
