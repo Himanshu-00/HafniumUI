@@ -32,12 +32,17 @@ def load_model_with_lora():
     """
     Loads the Diffusion model with LoRA weights.
     """
+    # Check if CUDA is available; otherwise, fall back to CPU
     device = "cuda" if torch.cuda.is_available() else "cpu"
+    
+    # Print the device being used
+    print(f"Using device: {device}")
+
     try:
         print("Loading the Diffusion model...")
         pipeline = DiffusionPipeline.from_pretrained(
             MODEL_PATH,
-            torch_dtype=torch.float16
+            torch_dtype=torch.float16 if device == "cuda" else torch.float32  # Use appropriate dtype
         )
         print("Model loaded successfully.")
 
@@ -45,7 +50,7 @@ def load_model_with_lora():
         download_lora_model()
 
         print(f"Loading LoRA weights from {LORA_MODEL_PATH}...")
-        lora_state_dict = load_file(LORA_MODEL_PATH)
+        lora_state_dict = load_file(LORA_MODEL_PATH, device=device)  # Load LoRA model on the correct device
         print("LoRA weights loaded successfully.")
 
         def add_lora_to_layer(layer_name, base_layer, lora_state_dict, alpha=0.75):
