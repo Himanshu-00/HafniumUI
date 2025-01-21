@@ -1,50 +1,19 @@
-import os
+# model.py
 import torch
-import requests
 from diffusers import DiffusionPipeline
 from safetensors.torch import load_file
-from ultralytics import YOLO
-from config import CONFIG  # Importing config for paths
+from config import CONFIG
 
-# Function to download LoRA weights from the URL
-import os
-
-# Function to download LoRA weights from the URL
-def download_lora_weights(url, save_path):
-    folder = os.path.dirname(save_path)  # Get the folder path
-    if not os.path.exists(folder):  # Check if folder exists
-        os.makedirs(folder)  # Create the folder if it doesn't exist
-
-    print(f"Downloading LoRA weights from: {url}")
-    response = requests.get(url)
-    if response.status_code == 200:
-        with open(save_path, "wb") as f:
-            f.write(response.content)
-        print(f"LoRA weights downloaded and saved to {save_path}")
-    else:
-        raise Exception(f"Failed to download LoRA weights. Status code: {response.status_code}")
-
-# Load the model with LoRA weights
 def load_model_with_lora():
-    device = CONFIG['device']
-    model_path = CONFIG['model_path']
-    lora_path = CONFIG['lora_path']
-    lora_url = CONFIG['lora_url']
-
-    # If LoRA weights are not downloaded, download them
-    if not os.path.exists(lora_path):
-        download_lora_weights(lora_url, lora_path)
+    device = CONFIG["device"]
 
     try:
         print("Loading the Diffusion model...")
-        pipeline = DiffusionPipeline.from_pretrained(
-            model_path,
-            torch_dtype=torch.float16
-        )
+        pipeline = DiffusionPipeline.from_pretrained(CONFIG["model_path"], torch_dtype=torch.float16)
         print("Model loaded successfully.")
 
-        print("Loading LoRA weights from:", lora_path)
-        lora_state_dict = load_file(lora_path)
+        print("Loading LoRA weights from:", CONFIG["lora_path"])
+        lora_state_dict = load_file(CONFIG["lora_path"])
         print("LoRA weights loaded successfully.")
 
         def add_lora_to_layer(layer_name, base_layer, lora_state_dict, alpha=0.75):
@@ -79,8 +48,3 @@ def load_model_with_lora():
 
     except Exception as e:
         raise Exception(f"Error loading model with LoRA: {e}")
-
-# Load YOLO face detection model
-def load_yolo_model():
-    yolo_model = YOLO(CONFIG['yolo_model_path'])
-    return yolo_model
