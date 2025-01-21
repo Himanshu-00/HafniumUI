@@ -7,12 +7,19 @@ from ultralytics import YOLO
 from config import CONFIG
 
 
-def save_segmented_image(image_array):
-    debug_dir = CONFIG["debug_dir"]
-    os.makedirs(debug_dir, exist_ok=True)  # Ensure the directory exists
 
-    file_path = os.path.join(debug_dir, "segmented_image.png")
-    Image.fromarray(image_array).save(file_path)
+def save_debug_image(image, filename):
+    debug_dir = '/content/HeliumUI/debug_images/'
+    # Check if the directory exists, if not, create it
+    if not os.path.exists(debug_dir):
+        os.makedirs(debug_dir)
+    
+    # Define the full path for the file
+    file_path = os.path.join(debug_dir, filename)
+    
+    # Save the image to the specified path
+    image.save(file_path)
+    print(f"Debug image saved to {file_path}")
 
 
 
