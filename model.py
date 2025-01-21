@@ -1,4 +1,4 @@
-# model.py
+import os
 import torch
 from diffusers import DiffusionPipeline
 from safetensors.torch import load_file
@@ -8,6 +8,12 @@ def load_model_with_lora():
     device = CONFIG["device"]
 
     try:
+        # Ensure the directory for the LoRA path exists
+        lora_dir = os.path.dirname(CONFIG["lora_path"])
+        if not os.path.exists(lora_dir):
+            os.makedirs(lora_dir, exist_ok=True)
+            print(f"Created directory for LoRA weights: {lora_dir}")
+
         print("Loading the Diffusion model...")
         pipeline = DiffusionPipeline.from_pretrained(CONFIG["model_path"], torch_dtype=torch.float16)
         print("Model loaded successfully.")
