@@ -3,7 +3,9 @@ import torch
 import requests
 from diffusers import DiffusionPipeline  # Assuming you're using DiffusionPipeline from diffusers library
 from torch import nn
+from safetensors.torch import load_file
 import config
+
 
 # Function to download the LoRA model and save it to the specified path
 def download_lora_model(LORA_DOWNLOAD_URL, LORA_PATH):
