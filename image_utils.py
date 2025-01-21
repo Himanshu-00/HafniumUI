@@ -6,8 +6,7 @@ from rembg import remove
 from ultralytics import YOLO
 from config import CONFIG
 
-
-
+# Function to save debug images
 def save_debug_image(image, filename):
     debug_dir = '/content/HeliumUI/debug_images/'
     print(f"Checking if the directory {debug_dir} exists...")
@@ -52,12 +51,6 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
     return output
 
 
-# Function to save debug images
-def save_debug_image(image, name):
-    file_path = os.path.join(CONFIG["debug_dir"], name)
-    image.save(file_path)
-    print(f"Debug image saved: {file_path}")
-
 # Function to segment image and refine the mask
 def segment_and_refine_mask(image, yolo_model):
     segmented = remove(image)  # Segment using rembg (U2Net)
@@ -69,8 +62,9 @@ def segment_and_refine_mask(image, yolo_model):
             r, g, b, a = segmented.getpixel((x, y))
             mask.putpixel((x, y), a)
 
+    # Save debug images with correct filenames
     save_debug_image(segmented, "segmented_image.png")
-    save_debug_image(mask, "segmented_mask.png")
+    save_debug_image(mask, "mask_image.png")
 
     yolo_results = yolo_model(image)  # Perform face detection
     refined_mask = refine_mask_with_bounding_box(image, mask, yolo_results)
@@ -99,6 +93,7 @@ def refine_mask_with_bounding_box(image, mask, yolo_results):
         refined_mask = Image.fromarray(mask_array, mode="L")
         inverted_mask = Image.eval(refined_mask, lambda x: 255 - x)
 
+        # Save the debug images with filenames
         save_debug_image(image, "yolo_bounding_box.png")
         save_debug_image(inverted_mask, "inverted_refined_mask.png")
 
