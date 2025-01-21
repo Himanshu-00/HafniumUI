@@ -3,10 +3,10 @@ from rembg import remove
 from PIL import Image, ImageDraw
 import numpy as np
 from ultralytics import YOLO
-from config import DEBUG_DIR
+from config import DEBUG_DIR, YOLO_PATH
 import os
 
-yolo_model = YOLO("yolov8x-face-lindevs.pt")
+yolo_model = YOLO(YOLO_PATH)
 
 def save_debug_image(image, name):
     file_path = os.path.join(DEBUG_DIR, name)
