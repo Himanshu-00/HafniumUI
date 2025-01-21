@@ -8,7 +8,7 @@ from ultralytics import YOLO
 from config import DEBUG_DIR
 
 # Initialize YOLO model
-yolo_model = YOLO("yolov8x-face-lindevs.pt")
+yolo_model = YOLO("yolov8n-face-lindevs.pt")
 
 # Function to save debug images
 def save_debug_image(image, name):
