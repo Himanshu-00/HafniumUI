@@ -1,40 +1,24 @@
-import os
+# model_loader.py
+
 import torch
 from diffusers import DiffusionPipeline
 from safetensors.torch import load_file
-from config import CONFIG
-import requests
+from config import MODEL_PATH, LOADED_LORA_PATH
 
-def download_lora_weights(url, save_path):
-    response = requests.get(url, stream=True)
-    if response.status_code == 200:
-        with open(save_path, 'wb') as f:
-            f.write(response.content)
-        print(f"Downloaded LoRA weights to: {save_path}")
-    else:
-        raise Exception(f"Failed to download LoRA weights from {url}. Status code: {response.status_code}")
-
+# Function to load model with LoRA weights
 def load_model_with_lora():
-    device = CONFIG["device"]
+    device = "cuda" if torch.cuda.is_available() else "cpu"
 
     try:
-        # Ensure the directory for the LoRA path exists
-        lora_dir = os.path.dirname(CONFIG["lora_path"])
-        if not os.path.exists(lora_dir):
-            os.makedirs(lora_dir, exist_ok=True)
-            print(f"Created directory for LoRA weights: {lora_dir}")
-
-        # Check if LoRA weights file exists; if not, download it
-        if not os.path.isfile(CONFIG["lora_path"]):
-            print("LoRA weights not found, downloading...")
-            download_lora_weights(CONFIG["lora_url"], CONFIG["lora_path"])
-
         print("Loading the Diffusion model...")
-        pipeline = DiffusionPipeline.from_pretrained(CONFIG["model_path"], torch_dtype=torch.float16)
+        pipeline = DiffusionPipeline.from_pretrained(
+            MODEL_PATH,
+            torch_dtype=torch.float16
+        )
         print("Model loaded successfully.")
 
-        print("Loading LoRA weights from:", CONFIG["lora_path"])
-        lora_state_dict = load_file(CONFIG["lora_path"])
+        print("Loading LoRA weights from:", LOADED_LORA_PATH)
+        lora_state_dict = load_file(LOADED_LORA_PATH)
         print("LoRA weights loaded successfully.")
 
         def add_lora_to_layer(layer_name, base_layer, lora_state_dict, alpha=0.75):

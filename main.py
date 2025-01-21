@@ -1,5 +1,6 @@
 # main.py
-from gradio_interface import demo
+
+from gradio_interface import create_gradio_interface
 
 if __name__ == "__main__":
-    demo.launch(share=True, debug=True)
+    create_gradio_interface()
