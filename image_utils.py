@@ -32,12 +32,17 @@ def save_debug_image(image, filename):
 
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, steps, input_image, mask):
     # Convert input_image and mask to PIL.Image.Image if they are not already
-    if not isinstance(input_image, Image.Image):
-        input_image = Image.fromarray(np.array(input_image))
+    if isinstance(input_image, np.ndarray):
+        input_image = Image.fromarray(input_image)  # Convert from NumPy array to PIL Image
+    elif not isinstance(input_image, Image.Image):
+        raise ValueError("Input image is not in a valid format (PIL.Image.Image or numpy.ndarray).")
 
-    if not isinstance(mask, Image.Image):
-        mask = Image.fromarray(np.array(mask))
+    if isinstance(mask, np.ndarray):
+        mask = Image.fromarray(mask)  # Convert from NumPy array to PIL Image
+    elif not isinstance(mask, Image.Image):
+        raise ValueError("Mask is not in a valid format (PIL.Image.Image or numpy.ndarray).")
 
+    # Ensure input image and mask are of correct format (PIL Image)
     inputs = {
         "prompt": prompt,
         "negative_prompt": negative_prompt,
@@ -47,6 +52,7 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         "mask_image": mask,
     }
 
+    # Pass the inputs to the pipeline and get the result
     output = pipeline(**inputs)
     return output
 
