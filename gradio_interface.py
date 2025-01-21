@@ -1,6 +1,7 @@
 # gradio_interface.py
 import gradio as gr
 from config import CONFIG
+from PIL import Image
 from model import load_model_with_lora
 from image_utils import generate_image_with_lora, segment_and_refine_mask
 from ultralytics import YOLO
