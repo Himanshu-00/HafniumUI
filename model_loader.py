@@ -1,56 +1,42 @@
 import os
 import torch
-import wget
-from safetensors.torch import load_file
 from diffusers import DiffusionPipeline
-from config import MODEL_PATH, LORA_MODEL_PATH, LORA_MODEL_URL
+from safetensors.torch import load_file
+from ultralytics import YOLO
+import requests
+from config import MODEL_PATH, LORA_PATH, YOLO_MODEL_PATH, LORA_DOWNLOAD_URL
 
-def create_directory(path):
-    """
-    Creates the directory if it doesn't exist.
-    """
-    if not os.path.exists(path):
-        os.makedirs(path)
-        print(f"Created directory: {path}")
-    else:
-        print(f"Directory already exists: {path}")
-
+# Function to download the LoRA model if not already present
 def download_lora_model():
-    """
-    Downloads the LoRA model from the specified URL if it is not already present.
-    """
-    create_directory(LORA_MODEL_PATH)  # Ensure the 'lora' directory exists
+    if not os.path.exists(LORA_PATH):
+        print(f"Downloading LoRA model from {LORA_DOWNLOAD_URL}...")
+        response = requests.get(LORA_DOWNLOAD_URL, stream=True)
+        if response.status_code == 200:
+            os.makedirs(os.path.dirname(LORA_PATH), exist_ok=True)
+            with open(LORA_PATH, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            print(f"LoRA model downloaded and saved to {LORA_PATH}")
+        else:
+            raise Exception(f"Failed to download LoRA model. Status code: {response.status_code}")
 
-    if not os.path.exists(LORA_MODEL_PATH):
-        print("LoRA model not found. Downloading...")
-        wget.download(LORA_MODEL_URL, LORA_MODEL_PATH)
-        print(f"\nLoRA model downloaded to {LORA_MODEL_PATH}")
-    else:
-        print("LoRA model already exists.")
-
+# Load the model with LoRA weights
 def load_model_with_lora():
-    """
-    Loads the Diffusion model with LoRA weights.
-    """
-    # Check if CUDA is available; otherwise, fall back to CPU
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
-    # Print the device being used
-    print(f"Using device: {device}")
+    # Download LoRA model if not present
+    download_lora_model()
 
     try:
         print("Loading the Diffusion model...")
         pipeline = DiffusionPipeline.from_pretrained(
             MODEL_PATH,
-            torch_dtype=torch.float16 if device == "cuda" else torch.float32  # Use appropriate dtype
+            torch_dtype=torch.float16
         )
         print("Model loaded successfully.")
 
-        # Ensure LoRA model is downloaded before loading it
-        download_lora_model()
-
-        print(f"Loading LoRA weights from {LORA_MODEL_PATH}...")
-        lora_state_dict = load_file(LORA_MODEL_PATH, device=device)  # Load LoRA model on the correct device
+        print("Loading LoRA weights from:", LORA_PATH)
+        lora_state_dict = load_file(LORA_PATH)
         print("LoRA weights loaded successfully.")
 
         def add_lora_to_layer(layer_name, base_layer, lora_state_dict, alpha=0.75):
@@ -85,3 +71,13 @@ def load_model_with_lora():
 
     except Exception as e:
         raise Exception(f"Error loading model with LoRA: {e}")
+
+# Load YOLO face detection model
+def load_yolo_model():
+    try:
+        print("Loading YOLO model...")
+        yolo_model = YOLO(YOLO_MODEL_PATH)
+        print("YOLO model loaded successfully.")
+        return yolo_model
+    except Exception as e:
+        raise Exception(f"Error loading YOLO model: {e}")
