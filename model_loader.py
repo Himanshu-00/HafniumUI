@@ -5,10 +5,22 @@ from safetensors.torch import load_file
 from diffusers import DiffusionPipeline
 from config import MODEL_PATH, LORA_MODEL_PATH, LORA_MODEL_URL
 
+def create_directory(path):
+    """
+    Creates the directory if it doesn't exist.
+    """
+    if not os.path.exists(path):
+        os.makedirs(path)
+        print(f"Created directory: {path}")
+    else:
+        print(f"Directory already exists: {path}")
+
 def download_lora_model():
     """
     Downloads the LoRA model from the specified URL if it is not already present.
     """
+    create_directory(LORA_MODEL_PATH)  # Ensure the 'lora' directory exists
+
     if not os.path.exists(LORA_MODEL_PATH):
         print("LoRA model not found. Downloading...")
         wget.download(LORA_MODEL_URL, LORA_MODEL_PATH)
