@@ -1,6 +1,10 @@
-# main.py
+import os
+from model_loader import download_lora_model
+from gradio_interface import demo
 
-from gradio_interface import create_gradio_interface
+# Ensure the model and LoRA weights are downloaded and available
+download_lora_model()
 
+# Launch the Gradio interface
 if __name__ == "__main__":
-    create_gradio_interface()
+    demo.launch(share=True, debug=True)

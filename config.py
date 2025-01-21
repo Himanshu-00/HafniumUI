@@ -1,14 +1,12 @@
-# config.py
-
 import os
 
-# Model and weights paths
+# Paths for the model, LoRA weights, and other assets
 MODEL_PATH = "diffusers/stable-diffusion-xl-1.0-inpainting-0.1"
-LOADED_LORA_PATH = "model/lora/sd_xl_offset_example-lora_1.0.safetensors"
+LORA_MODEL_PATH = "model/lora/sd_xl_offset_example-lora_1.0.safetensors"
 DEBUG_DIR = "debug_images"
 
-# Ensure the directories exist
-os.makedirs(DEBUG_DIR, exist_ok=True)
+# LoRA model download link
+LORA_MODEL_URL = "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors"
 
-# Paths for downloaded models
-LOADER_MODEL_URL = "https://huggingface.co/CompVis/stable-diffusion-v-1-4-original/resolve/main/model.ckpt"  # Example URL
+# Create debug directory
+os.makedirs(DEBUG_DIR, exist_ok=True)

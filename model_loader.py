@@ -1,14 +1,26 @@
-# model_loader.py
-
+import os
 import torch
-from diffusers import DiffusionPipeline
+import wget
 from safetensors.torch import load_file
-from config import MODEL_PATH, LOADED_LORA_PATH
+from diffusers import DiffusionPipeline
+from config import MODEL_PATH, LORA_MODEL_PATH, LORA_MODEL_URL
 
-# Function to load model with LoRA weights
+def download_lora_model():
+    """
+    Downloads the LoRA model from the specified URL if it is not already present.
+    """
+    if not os.path.exists(LORA_MODEL_PATH):
+        print("LoRA model not found. Downloading...")
+        wget.download(LORA_MODEL_URL, LORA_MODEL_PATH)
+        print(f"\nLoRA model downloaded to {LORA_MODEL_PATH}")
+    else:
+        print("LoRA model already exists.")
+
 def load_model_with_lora():
+    """
+    Loads the Diffusion model with LoRA weights.
+    """
     device = "cuda" if torch.cuda.is_available() else "cpu"
-
     try:
         print("Loading the Diffusion model...")
         pipeline = DiffusionPipeline.from_pretrained(
@@ -17,8 +29,8 @@ def load_model_with_lora():
         )
         print("Model loaded successfully.")
 
-        print("Loading LoRA weights from:", LOADED_LORA_PATH)
-        lora_state_dict = load_file(LOADED_LORA_PATH)
+        print(f"Loading LoRA weights from {LORA_MODEL_PATH}...")
+        lora_state_dict = load_file(LORA_MODEL_PATH)
         print("LoRA weights loaded successfully.")
 
         def add_lora_to_layer(layer_name, base_layer, lora_state_dict, alpha=0.75):
