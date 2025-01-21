@@ -3,6 +3,16 @@ import torch
 from diffusers import DiffusionPipeline
 from safetensors.torch import load_file
 from config import CONFIG
+import requests
+
+def download_lora_weights(url, save_path):
+    response = requests.get(url, stream=True)
+    if response.status_code == 200:
+        with open(save_path, 'wb') as f:
+            f.write(response.content)
+        print(f"Downloaded LoRA weights to: {save_path}")
+    else:
+        raise Exception(f"Failed to download LoRA weights from {url}. Status code: {response.status_code}")
 
 def load_model_with_lora():
     device = CONFIG["device"]
@@ -13,6 +23,11 @@ def load_model_with_lora():
         if not os.path.exists(lora_dir):
             os.makedirs(lora_dir, exist_ok=True)
             print(f"Created directory for LoRA weights: {lora_dir}")
+
+        # Check if LoRA weights file exists; if not, download it
+        if not os.path.isfile(CONFIG["lora_path"]):
+            print("LoRA weights not found, downloading...")
+            download_lora_weights(CONFIG["lora_url"], CONFIG["lora_path"])
 
         print("Loading the Diffusion model...")
         pipeline = DiffusionPipeline.from_pretrained(CONFIG["model_path"], torch_dtype=torch.float16)
