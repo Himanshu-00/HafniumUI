@@ -10,17 +10,25 @@ from config import CONFIG
 
 def save_debug_image(image, filename):
     debug_dir = '/content/HeliumUI/debug_images/'
+    print(f"Checking if the directory {debug_dir} exists...")
+    
     # Check if the directory exists, if not, create it
     if not os.path.exists(debug_dir):
+        print(f"Directory {debug_dir} does not exist. Creating it now.")
         os.makedirs(debug_dir)
+    else:
+        print(f"Directory {debug_dir} exists.")
     
     # Define the full path for the file
     file_path = os.path.join(debug_dir, filename)
+    print(f"Saving image to {file_path}")
     
     # Save the image to the specified path
-    image.save(file_path)
-    print(f"Debug image saved to {file_path}")
-
+    try:
+        image.save(file_path)
+        print(f"Debug image saved to {file_path}")
+    except Exception as e:
+        print(f"Error while saving the image: {e}")
 
 
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, steps, input_image, mask):
