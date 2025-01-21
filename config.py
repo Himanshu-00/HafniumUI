@@ -11,8 +11,8 @@ DEBUG_IMAGE = "debug_images"
 LORA_DOWNLOAD_URL = "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors"
 
 # Configure device preferences here, I'm using MPS for Apple Silicon GPU:
-ALLOW_CUDA = False
-ALLOW_MPS = True
+ALLOW_CUDA = True
+ALLOW_MPS = False
 
 if torch.cuda.is_available() and ALLOW_CUDA:
     DEVICE = "cuda"
