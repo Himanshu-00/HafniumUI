@@ -28,6 +28,7 @@ def load_model_with_lora():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model_path = config.MODEL_PATH
     lora_path = config.LORA_PATH
+    lora_download_url = config.LORA_DOWNLOAD_URL  # Ensure this is defined in your config
 
     try:
         print("Loading the Diffusion model...")
@@ -36,6 +37,9 @@ def load_model_with_lora():
             torch_dtype=torch.float16
         )
         print("Model loaded successfully.")
+
+        # Call the download function here
+        download_lora_model(lora_download_url, lora_path)
 
         print("Loading LoRA weights from:", lora_path)
         lora_state_dict = load_file(lora_path)
