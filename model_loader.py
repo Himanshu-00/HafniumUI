@@ -29,6 +29,9 @@ def load_model_with_lora():
         )
         print("Model loaded successfully.")
 
+        # Ensure LoRA model is downloaded before loading it
+        download_lora_model()
+
         print(f"Loading LoRA weights from {LORA_MODEL_PATH}...")
         lora_state_dict = load_file(LORA_MODEL_PATH)
         print("LoRA weights loaded successfully.")
