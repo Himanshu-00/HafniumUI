@@ -30,19 +30,30 @@ def save_debug_image(image, filename):
         print(f"Error while saving the image: {e}")
 
 
+
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, steps, input_image, mask):
-    # Convert input_image and mask to PIL.Image.Image if they are not already
+    # Convert input_image to PIL.Image.Image if it's not already
     if isinstance(input_image, np.ndarray):
         input_image = Image.fromarray(input_image)  # Convert from NumPy array to PIL Image
     elif not isinstance(input_image, Image.Image):
         raise ValueError("Input image is not in a valid format (PIL.Image.Image or numpy.ndarray).")
-
+    
+    # Convert mask to PIL.Image.Image if it's not already
     if isinstance(mask, np.ndarray):
         mask = Image.fromarray(mask)  # Convert from NumPy array to PIL Image
     elif not isinstance(mask, Image.Image):
         raise ValueError("Mask is not in a valid format (PIL.Image.Image or numpy.ndarray).")
+    
+    # Convert input_image and mask to torch.Tensor if needed
+    if isinstance(input_image, Image.Image):
+        input_image = np.array(input_image)  # Convert PIL image to NumPy array
+        input_image = torch.tensor(input_image).permute(2, 0, 1).unsqueeze(0).float()  # Convert to tensor and normalize if needed
+    
+    if isinstance(mask, Image.Image):
+        mask = np.array(mask)  # Convert PIL image to NumPy array
+        mask = torch.tensor(mask).unsqueeze(0).unsqueeze(0).float()  # Convert to tensor and normalize if needed
 
-    # Ensure input image and mask are of correct format (PIL Image)
+    # Ensure input_image and mask are now torch.Tensor, NumPy array or PIL.Image
     inputs = {
         "prompt": prompt,
         "negative_prompt": negative_prompt,
@@ -55,6 +66,7 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
     # Pass the inputs to the pipeline and get the result
     output = pipeline(**inputs)
     return output
+
 
 
 # Function to segment image and refine the mask
