@@ -3,10 +3,10 @@ import numpy as np
 from PIL import Image, ImageDraw
 from rembg import remove
 from ultralytics import YOLO
-from config import DEBUG_DIR
+from config import DEBUG_DIR, YOLO_PATH
 
 # Load YOLO face detection model
-yolo_model = YOLO("yolov8x-face-lindevs.pt")
+yolo_model = YOLO(YOLO_PATH)
 
 def save_debug_image(image, name):
     """
