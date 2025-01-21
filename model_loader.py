@@ -9,6 +9,11 @@ import config
 # Function to download the LoRA model and save it to the specified path
 def download_lora_model(LORA_DOWNLOAD_URL, LORA_PATH):
     try:
+         # Check if the model file already exists
+        if os.path.exists(LORA_PATH):
+            print(f"Model already exists at {LORA_PATH}. Skipping download.")
+            return
+
         # Ensure model directories exist or create them if they don't
         if not os.path.exists("models/lora"):
             os.makedirs("models/lora")
