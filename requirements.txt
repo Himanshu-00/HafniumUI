@@ -6,3 +6,5 @@ rembg
 gradio
 Pillow
 numpy
+rembg
+onnxruntime
