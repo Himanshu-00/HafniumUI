@@ -1,9 +1,29 @@
-# image_utils.py
+import torch
 from PIL import Image, ImageDraw
 import numpy as np
 from rembg import remove
 from ultralytics import YOLO
 from config import CONFIG
+
+
+def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, steps, input_image, mask):
+    # Assuming pipeline is already loaded with LoRA weights and moved to the appropriate device
+    # Prepare the inputs for the model
+    inputs = {
+        "prompt": prompt,
+        "negative_prompt": negative_prompt,
+        "guidance_scale": guidance_scale,
+        "num_inference_steps": steps,
+        "image": input_image,
+        "mask": mask,
+    }
+    
+    # Generate image using the pipeline
+    output = pipeline(**inputs)
+    generated_image = output.images[0]
+
+    return generated_image
+
 
 # Function to save debug images
 def save_debug_image(image, name):
