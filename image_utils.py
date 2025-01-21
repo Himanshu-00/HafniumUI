@@ -7,6 +7,20 @@ from ultralytics import YOLO
 from config import CONFIG
 
 
+# Ensure the debug_images directory exists
+debug_dir = CONFIG["debug_dir"]
+os.makedirs(debug_dir, exist_ok=True)
+
+
+def save_segmented_image(image_array):
+    debug_dir = CONFIG["debug_dir"]
+    os.makedirs(debug_dir, exist_ok=True)  # Ensure the directory exists
+
+    file_path = os.path.join(debug_dir, "segmented_image.png")
+    Image.fromarray(image_array).save(file_path)
+
+
+
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, steps, input_image, mask):
     # Assuming pipeline is already loaded with LoRA weights and moved to the appropriate device
     # Prepare the inputs for the model
