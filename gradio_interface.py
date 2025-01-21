@@ -1,12 +1,34 @@
+# gradio_interface.py
 import gradio as gr
-from model_loader import load_model_with_lora, load_yolo_model
+from model_loader import load_model_with_lora
 from image_preprocessing import segment_and_refine_mask
 from config import DEBUG_DIR
 
-def gradio_interface():
-    pipeline_with_lora = load_model_with_lora()
-    yolo_model = load_yolo_model()
+def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image):
+    try:
+        if not prompt.strip():
+            raise Exception("Please provide a prompt.")
+        print(f"Generating image with prompt: '{prompt}', negative prompt: '{negative_prompt}', guidance scale: {guidance_scale}, and steps: {num_steps}.")
+        input_image = Image.fromarray(input_image).convert("RGB")
+        mask = segment_and_refine_mask(input_image)
 
+        with torch.no_grad():
+            image = pipeline(
+                prompt=prompt,
+                negative_prompt=negative_prompt,
+                guidance_scale=guidance_scale,
+                num_inference_steps=num_steps,
+                image=input_image,
+                mask_image=mask
+            ).images[0]
+
+        print("Image generated successfully.")
+        return image
+
+    except Exception as e:
+        raise Exception(f"Error generating image: {e}")
+
+def create_gradio_interface(pipeline):
     with gr.Blocks() as demo:
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
@@ -25,10 +47,10 @@ def gradio_interface():
 
         generate_btn.click(
             fn=lambda prompt, neg_prompt, gs, steps, img: generate_image_with_lora(
-                pipeline_with_lora, prompt, neg_prompt, gs, steps, img, yolo_model
+                pipeline, prompt, neg_prompt, gs, steps, img
             ),
             inputs=[prompt, negative_prompt, guidance_scale, steps, input_image],
             outputs=output_image
         )
 
-    demo.launch(share=True, debug=True)
+    return demo

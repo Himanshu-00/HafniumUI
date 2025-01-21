@@ -1,22 +1,22 @@
-import numpy as np
-from PIL import Image, ImageDraw
+# image_preprocessing.py
 from rembg import remove
+from PIL import Image, ImageDraw
+import numpy as np
 from ultralytics import YOLO
 from config import DEBUG_DIR
+import os
 
-# Save debug images
+yolo_model = YOLO("yolov8x-face-lindevs.pt")
+
 def save_debug_image(image, name):
     file_path = os.path.join(DEBUG_DIR, name)
     image.save(file_path)
     print(f"Debug image saved: {file_path}")
 
-# Segment the input image using U2Net and refine with YOLO face detection
-def segment_and_refine_mask(image, yolo_model):
-    # Step 1: Perform segmentation using rembg
+def segment_and_refine_mask(image):
     segmented = remove(image)
     mask = Image.new("L", image.size, 0)
 
-    # Convert transparency into grayscale mask
     for y in range(segmented.height):
         for x in range(segmented.width):
             r, g, b, a = segmented.getpixel((x, y))
@@ -25,7 +25,6 @@ def segment_and_refine_mask(image, yolo_model):
     save_debug_image(segmented, "segmented_image.png")
     save_debug_image(mask, "segmented_mask.png")
 
-    # Step 2: Use YOLO for face detection and refine the mask
     yolo_results = yolo_model(image)
     refined_mask = refine_mask_with_bounding_box(image, mask, yolo_results)
 
