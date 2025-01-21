@@ -4,19 +4,23 @@ from diffusers import DiffusionPipeline
 from safetensors.torch import load_file
 from ultralytics import YOLO
 import requests
-from config import MODEL_PATH, LORA_PATH, YOLO_MODEL_PATH, LORA_DOWNLOAD_URL
+from config import MODEL_PATH, LORTA_PATH, YOLO_PATH, LOTA_DOWNLOAD_URL
 
 # Function to download the LoRA model if not already present
 def download_lora_model():
-    if not os.path.exists(LORA_PATH):
-        print(f"Downloading LoRA model from {LORA_DOWNLOAD_URL}...")
-        response = requests.get(LORA_DOWNLOAD_URL, stream=True)
+    # Check if the 'model/lora' folder exists, and create it if not
+    if not os.path.exists(os.path.dirname(LORTA_PATH)):
+        print(f"Creating directory {os.path.dirname(LORTA_PATH)}...")
+        os.makedirs(os.path.dirname(LORTA_PATH), exist_ok=True)
+    
+    if not os.path.exists(LORTA_PATH):
+        print(f"Downloading LoRA model from {LOTA_DOWNLOAD_URL}...")
+        response = requests.get(LOTA_DOWNLOAD_URL, stream=True)
         if response.status_code == 200:
-            os.makedirs(os.path.dirname(LORA_PATH), exist_ok=True)
-            with open(LORA_PATH, 'wb') as f:
+            with open(LORTA_PATH, 'wb') as f:
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
-            print(f"LoRA model downloaded and saved to {LORA_PATH}")
+            print(f"LoRA model downloaded and saved to {LORTA_PATH}")
         else:
             raise Exception(f"Failed to download LoRA model. Status code: {response.status_code}")
 
@@ -35,8 +39,8 @@ def load_model_with_lora():
         )
         print("Model loaded successfully.")
 
-        print("Loading LoRA weights from:", LORA_PATH)
-        lora_state_dict = load_file(LORA_PATH)
+        print("Loading LoRA weights from:", LORTA_PATH)
+        lora_state_dict = load_file(LORTA_PATH)
         print("LoRA weights loaded successfully.")
 
         def add_lora_to_layer(layer_name, base_layer, lora_state_dict, alpha=0.75):
@@ -76,7 +80,7 @@ def load_model_with_lora():
 def load_yolo_model():
     try:
         print("Loading YOLO model...")
-        yolo_model = YOLO(YOLO_MODEL_PATH)
+        yolo_model = YOLO(YOLO_PATH)
         print("YOLO model loaded successfully.")
         return yolo_model
     except Exception as e:
