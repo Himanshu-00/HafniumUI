@@ -2,7 +2,6 @@ import os
 import torch
 import requests
 from diffusers import DiffusionPipeline  # Assuming you're using DiffusionPipeline from diffusers library
-from torch import nn
 from safetensors.torch import load_file
 import config
 
@@ -10,6 +9,10 @@ import config
 # Function to download the LoRA model and save it to the specified path
 def download_lora_model(LORA_DOWNLOAD_URL, LORA_PATH):
     try:
+        # Ensure model directories exist or create them if they don't
+        if not os.path.exists("models/lora"):
+            os.makedirs("models/lora")
+            
         print(f"Downloading LoRA model from {LORA_DOWNLOAD_URL}...")
         response = requests.get(LORA_DOWNLOAD_URL, stream=True)
         response.raise_for_status()  # Raise exception for HTTP errors
@@ -25,12 +28,13 @@ def download_lora_model(LORA_DOWNLOAD_URL, LORA_PATH):
 
 # Load the model with LoRA weights
 def load_model_with_lora():
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = config.DEVICE
     model_path = config.MODEL_PATH
     lora_path = config.LORA_PATH
     lora_download_url = config.LORA_DOWNLOAD_URL  # Ensure this is defined in your config
 
     try:
+        print(config.DEVICE)
         print("Loading the Diffusion model...")
         pipeline = DiffusionPipeline.from_pretrained(
             model_path,

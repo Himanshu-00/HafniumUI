@@ -3,25 +3,21 @@ from PIL import Image, ImageDraw
 from ultralytics import YOLO
 from rembg import remove  # For segmentation using U2Net
 import numpy as np
-from config import YOLO_PATH
+from config import YOLO_PATH, DEBUG_IMAGE
 
 
 # Load YOLO face detection model
 yolo_model = YOLO(YOLO_PATH)
 
-# Ensure model directories exist or create them if they don't
-if not os.path.exists("models"):
-    os.makedirs("models")
-if not os.path.exists("models/loras"):
-    os.makedirs("models/loras")
-if not os.path.exists("debug_images"):
-    os.makedirs("debug_images")
 
 def save_debug_image(image, name):
     """
     Saves the given image to the debug directory.
     """
-    file_path = os.path.join(DEBUG_DIR, name)
+    if not os.path.exists("debug_images"):
+        os.makedirs("debug_images")
+
+    file_path = os.path.join(DEBUG_IMAGE, name)
     image.save(file_path)
     print(f"Debug image saved: {file_path}")
 

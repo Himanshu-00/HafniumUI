@@ -9,4 +9,4 @@ numpy
 rembg
 onnxruntime
 wget
-transformers
+
