@@ -38,15 +38,17 @@ def load_model_with_lora():
     lora_path = config.LORA_PATH
     lora_download_url = config.LORA_DOWNLOAD_URL  # Ensure this is defined in your config
 
-    try:
-        print(config.DEVICE)
-        print("Loading the Diffusion model...")
-        pipeline = DiffusionPipeline.from_pretrained(
-            model_path,
-            torch_dtype=torch.float16
-        )
-        print("Model loaded successfully.")
+    print(config.DEVICE)
+    print("Loading the Diffusion model...")
+    pipeline = DiffusionPipeline.from_pretrained(
+        model_path,
+        torch_dtype=torch.float16
+    )
+    print("Model loaded successfully.")
 
+
+    try:
+       
         # Call the download function here
         download_lora_model(lora_download_url, lora_path)
 
