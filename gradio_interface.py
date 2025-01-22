@@ -35,13 +35,7 @@ def create_gradio_interface(pipeline_with_lora):
         # Modified action for button click with streaming
         generate_btn.click(
             fn=generate_image_with_lora,
-            inputs=[
-                prompt,
-                negative_prompt,
-                guidance_scale,
-                steps,
-                input_image
-            ],
+            inputs=[prompt, negative_prompt, guidance_scale, steps, input_image],
             outputs=output_image,
         )
 
