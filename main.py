@@ -6,4 +6,4 @@ from pipeline import pipeline_with_lora
 
 if __name__ == "__main__":
     HeliumUI = create_gradio_interface(pipeline_with_lora)
-    HeliumUI.launch(share=True, debug=True)
+    HeliumUI.queue().launch(share=True, debug=True)

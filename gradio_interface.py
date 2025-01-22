@@ -45,5 +45,4 @@ def create_gradio_interface(pipeline_with_lora):
             outputs=output_image,
         )
 
-    HeliumUI.queue()
     return HeliumUI
