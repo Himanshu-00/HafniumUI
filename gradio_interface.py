@@ -23,12 +23,27 @@ def create_gradio_interface(pipeline_with_lora):
                 output_image = gr.Image(label="Generated Image")
 
         # Action for button click
+        # generate_btn.click(
+        #     fn=lambda prompt, neg_prompt, gs, steps, img: generate_image_with_lora(
+        #         pipeline_with_lora, prompt, neg_prompt, gs, steps, img
+        #     ),
+        #     inputs=[prompt, negative_prompt, guidance_scale, steps, input_image],
+        #     outputs=output_image
+        # )
+        
+        
+        # Modified action for button click with streaming
         generate_btn.click(
             fn=lambda prompt, neg_prompt, gs, steps, img: generate_image_with_lora(
                 pipeline_with_lora, prompt, neg_prompt, gs, steps, img
             ),
             inputs=[prompt, negative_prompt, guidance_scale, steps, input_image],
-            outputs=output_image
+            outputs=output_image,
+            show_progress=True,
+        ).then(
+            lambda: None,  # Optional callback after generation completes
+            None,
+            None,
         )
 
     return HeliumUI
