@@ -36,7 +36,6 @@ def create_gradio_interface(pipeline_with_lora):
         generate_btn.click(
             fn=generate_image_with_lora,
             inputs=[
-                pipeline_with_lora,  # This will be passed as a global variable
                 prompt,
                 negative_prompt,
                 guidance_scale,
@@ -45,6 +44,6 @@ def create_gradio_interface(pipeline_with_lora):
             ],
             outputs=output_image,
         )
-        
+
     HeliumUI.queue()
     return HeliumUI
