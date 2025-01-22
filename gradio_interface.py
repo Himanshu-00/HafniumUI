@@ -34,16 +34,16 @@ def create_gradio_interface(pipeline_with_lora):
         
         # Modified action for button click with streaming
         generate_btn.click(
-            fn=lambda prompt, neg_prompt, gs, steps, img: generate_image_with_lora(
-                pipeline_with_lora, prompt, neg_prompt, gs, steps, img
-            ),
-            inputs=[prompt, negative_prompt, guidance_scale, steps, input_image],
+            fn=generate_image_with_lora,
+            inputs=[
+                pipeline_with_lora,  # This will be passed as a global variable
+                prompt,
+                negative_prompt,
+                guidance_scale,
+                steps,
+                input_image
+            ],
             outputs=output_image,
-            show_progress=True,
-        ).then(
-            lambda: None,  # Optional callback after generation completes
-            None,
-            None,
         )
 
     return HeliumUI

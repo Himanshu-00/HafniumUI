@@ -7,7 +7,7 @@ from model_loader import load_model_with_lora
 from image_preprocessing import segment_and_refine_mask
 
 # Function to generate an image using the model with LoRA
-def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image):
+def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image, progress=gr.Progress(track_tqdm=True)):
     try:
         if not prompt.strip():
             raise Exception("Please provide a prompt.")
@@ -19,8 +19,9 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         # Enable streaming outputs by accessing the internal scheduler
         scheduler = pipeline.scheduler
         timesteps = scheduler.timesteps
+        progress(0, desc="Preparing...")
 
-        # Initialize the latents and other parameters as the pipeline would
+        # Initialize the latents and other parameters
         device = pipeline.device
         do_classifier_free_guidance = guidance_scale > 1.0
         
@@ -53,8 +54,8 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                 negative_prompt=negative_prompt
             )
 
-            # Denoising loop with yields
-            for i, t in enumerate(timesteps):
+            # Denoising loop with progress updates
+            for i, t in enumerate(progress.tqdm(timesteps, desc="Generating")):
                 # Expand latents for classifier-free guidance
                 latent_model_input = torch.cat([latents] * 2) if do_classifier_free_guidance else latents
 
@@ -75,11 +76,14 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                 latents = scheduler.step(noise_pred, t, latents).prev_sample
 
                 # Generate intermediate result every few steps
-                if i % 5 == 0 or i == len(timesteps) - 1:  # Adjust frequency as needed
+                if i % 5 == 0 or i == len(timesteps) - 1:
+                    # Decode the current latents
                     with torch.no_grad():
                         image = pipeline.vae.decode(latents / pipeline.vae.config.scaling_factor, return_dict=False)[0]
                         image = pipeline.image_processor.postprocess(image, output_type="pil")[0]
-                        yield image
+                        
+                        # Convert PIL Image to numpy array for Gradio
+                        yield np.array(image)
 
         print("Image generation completed.")
 
