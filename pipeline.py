@@ -7,6 +7,46 @@ import gradio as gr
 from model_loader import load_model_with_lora
 from image_preprocessing import segment_and_refine_mask
 
+# Prepare text embeddings manually
+def encode_prompt(pipeline, prompt, negative_prompt, device, num_images_per_prompt, do_classifier_free_guidance):
+    tokenizer = pipeline.tokenizer
+    text_encoder = pipeline.text_encoder
+
+    # Tokenize and encode positive prompt
+    positive_inputs = tokenizer(
+        prompt,
+        padding="max_length",
+        max_length=tokenizer.model_max_length,
+        truncation=True,
+        return_tensors="pt"
+    ).to(device)
+
+    positive_embeddings = text_encoder(**positive_inputs).last_hidden_state
+
+    # Tokenize and encode negative prompt
+    negative_embeddings = None
+    if do_classifier_free_guidance:
+        negative_inputs = tokenizer(
+            negative_prompt,
+            padding="max_length",
+            max_length=tokenizer.model_max_length,
+            truncation=True,
+            return_tensors="pt"
+        ).to(device)
+        negative_embeddings = text_encoder(**negative_inputs).last_hidden_state
+
+    # Combine embeddings for classifier-free guidance
+    if do_classifier_free_guidance:
+        embeddings = torch.cat([negative_embeddings, positive_embeddings], dim=0)
+    else:
+        embeddings = positive_embeddings
+
+    # Expand embeddings for the number of images per prompt
+    embeddings = embeddings.repeat_interleave(num_images_per_prompt, dim=0)
+    return embeddings
+
+
+
 # Function to generate an image using the model with LoRA
 def generate_image_with_lora(prompt, negative_prompt, guidance_scale, num_steps, input_image, progress=gr.Progress(track_tqdm=True)):
     try:
@@ -61,12 +101,13 @@ def generate_image_with_lora(prompt, negative_prompt, guidance_scale, num_steps,
         init_image = torch.from_numpy(init_image).to(device=device, dtype=torch.float32) / 127.5 - 1.0
 
         # Prepare text embeddings
-        text_embeddings = pipeline._encode_prompt(
+        text_embeddings = encode_prompt(
+            pipeline=pipeline,
             prompt=prompt,
+            negative_prompt=negative_prompt,
             device=device,
             num_images_per_prompt=1,
-            do_classifier_free_guidance=do_classifier_free_guidance,
-            negative_prompt=negative_prompt
+            do_classifier_free_guidance=do_classifier_free_guidance
         )
 
         # Prepare latents
