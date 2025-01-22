@@ -3,6 +3,7 @@ import os
 import torch
 from PIL import Image, ImageDraw
 import numpy as np
+import gradio as gr
 from model_loader import load_model_with_lora
 from image_preprocessing import segment_and_refine_mask
 
