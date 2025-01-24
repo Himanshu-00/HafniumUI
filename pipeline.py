@@ -22,8 +22,8 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         with torch.no_grad():
             # Generate the image using the mask created from segmentation and YOLO
             image = pipeline(
-                prompt=PROMPT,
-                negative_prompt=NPROMPT,
+                prompt=prompt,
+                negative_prompt=negative_prompt,
                 guidance_scale=guidance_scale,
                 num_inference_steps=num_steps,
                 image=input_image,
