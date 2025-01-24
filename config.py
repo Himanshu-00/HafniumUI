@@ -20,3 +20,9 @@ elif torch.backends.mps.is_available() and ALLOW_MPS:
     DEVICE = "mps"
 else:
     DEVICE = "cpu"
+
+
+PROMPT = ""
+NPROMPT = "" 
+GS = "" 
+STEPS = ""
