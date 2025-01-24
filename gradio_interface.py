@@ -25,8 +25,8 @@ def create_gradio_interface(pipeline_with_lora):
 
         # Action for button click
         generate_btn.click(
-            fn=lambda prompt, neg_prompt, gs, steps, img: generate_image_with_lora(
-                pipeline_with_lora, prompt, neg_prompt, gs, steps, img
+            fn=lambda gs, steps, img: generate_image_with_lora(
+                pipeline_with_lora, PROMPT, NPROMPT, gs, steps, img
             ),
             inputs=[guidance_scale, steps, input_image],
             outputs=output_image
