@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw
 import numpy as np
 from model_loader import load_model_with_lora
 from image_preprocessing import segment_and_refine_mask
-from config import PROMPT, STEPS, GS, NPROMPT
+from config import PROMPT, NPROMPT
 
 # Function to generate an image using the model with LoRA
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image):
