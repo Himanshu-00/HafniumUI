@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw
 import numpy as np
 from model_loader import load_model_with_lora
 from image_preprocessing import segment_and_refine_mask
+from config import PROMPT, STEPS, GS, NPROMPT
 
 # Function to generate an image using the model with LoRA
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image):
@@ -21,8 +22,8 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         with torch.no_grad():
             # Generate the image using the mask created from segmentation and YOLO
             image = pipeline(
-                prompt=prompt,
-                negative_prompt=negative_prompt,
+                prompt=PROMPT,
+                negative_prompt=NPROMPT,
                 guidance_scale=guidance_scale,
                 num_inference_steps=num_steps,
                 image=input_image,
