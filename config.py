@@ -29,6 +29,38 @@ He stands confidently against a sleek, light gray backdrop inside a modern photo
 The image is captured in a medium shot, 8K HDR, showcasing the refined elegance of his attire.
 
 """
+
+PROMPT1 = """
+
+A photorealistic portrait of a 23-year-old male model from Brazil, dressed in a tailored charcoal suit and matching tie that conveys sophistication.
+He is positioned against a minimalist black background in a well-lit studio, with dramatic lighting that highlights the contours of his suit and creates a striking visual contrast. 
+The image is captured in a three-quarter angle, 8K HDR, emphasizing the suit's craftsmanship.
+
+"""
+
+PROMPT2 = """
+
+A photorealistic portrait of a 23-year-old male model from Germany, presenting a polished look in a tailored light gray suit and matching tie.
+He stands against a soft white backdrop in a professional studio setting, enhanced by bright, focused lighting that accentuates the suit's details and creates a clean, modern aesthetic.
+The image is captured in a close-up shot, 8K HDR, reflecting the suit's elegance.
+
+"""
+
+PROMPT3 = """"""
+
+PROMPT4 = """"""
+
+
+
+
+
+
+
+
+
+
+
+
 NPROMPT = """
 
 "No distracting visual elements or cluttered backgrounds with complex patterns, busy textures, or elements that draw attention away from the subject."
