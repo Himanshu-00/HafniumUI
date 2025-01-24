@@ -16,7 +16,7 @@ def create_gradio_interface(pipeline_with_lora):
             #     with gr.Row():
             #         guidance_scale = gr.Slider(minimum=1, maximum=20, value=7.5, step=0.5, label="Guidance Scale")
             #         steps = gr.Slider(minimum=1, maximum=100, value=30, step=1, label="Number of Steps")
-             with gr.Column():
+            with gr.Column():
                 prompt = PROMPT
                 negative_prompt = NPROMPT
                 with gr.Row():
