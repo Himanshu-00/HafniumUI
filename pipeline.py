@@ -5,52 +5,36 @@ from PIL import Image, ImageDraw
 import numpy as np
 from model_loader import load_model_with_lora
 from image_preprocessing import segment_and_refine_mask
-from config import PROMPT, NPROMPT
+import gradio as gr
 
 # Function to generate an image using the model with LoRA
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image):
     try:
         if not prompt.strip():
-            raise ValueError("Please provide a valid prompt.")
-        
-        print(f"Generating image with prompt: '{prompt}', negative prompt: '{negative_prompt}', guidance scale: {guidance_scale}, steps: {num_steps}.")
-        
-        # Convert input image to PIL format
-        if not isinstance(input_image, np.ndarray):
-            raise TypeError("Input image must be a NumPy array.")
+            raise Exception("Please provide a prompt.")
+
+        print(f"Generating image with prompt: '{prompt}', negative prompt: '{negative_prompt}', guidance scale: {guidance_scale}, and steps: {num_steps}.")
         input_image = Image.fromarray(input_image).convert("RGB")
-        print("Input image converted to PIL format.")
 
-        # Generate segmentation mask
+        # Segment the input image using rembg and YOLO for face detection
         mask = segment_and_refine_mask(input_image)
-        if mask is None or not isinstance(mask, Image.Image):
-            raise ValueError("Segmentation mask is invalid or not generated.")
-        print("Mask generated successfully.")
 
-        # Generate the image using the pipeline
         with torch.no_grad():
-            output = pipeline(
-                prompt=PROMPT,
-                negative_prompt=NPROMPT,
+            # Generate the image using the mask created from segmentation and YOLO
+            image = pipeline(
+                prompt=prompt,
+                negative_prompt=negative_prompt,
                 guidance_scale=guidance_scale,
                 num_inference_steps=num_steps,
                 image=input_image,
                 mask_image=mask
-            )
-        
-        if not hasattr(output, "images") or not output.images:
-            raise ValueError("Pipeline did not return any images.")
-        
-        image = output.images[0]
-        if not isinstance(image, Image.Image):
-            image = Image.fromarray(np.array(image))  # Ensure valid PIL.Image
-        
+            ).images[0]
+
         print("Image generated successfully.")
         return image
 
     except Exception as e:
-        print(f"Error generating image: {e}")
-        raise
+        raise Exception(f"Error generating image: {e}")
 
 # Load the model with LoRA
 pipeline_with_lora = load_model_with_lora()
