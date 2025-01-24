@@ -1,6 +1,7 @@
 # gradio_interface.py
 import gradio as gr
 from pipeline import generate_image_with_lora
+from config import PROMPT, NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
     with gr.Blocks() as HeliumUI:
@@ -10,8 +11,8 @@ def create_gradio_interface(pipeline_with_lora):
         with gr.Row():
             # Left side column with prompt, guidance_scale, steps, input_image, and generate_btn
             with gr.Column():
-                prompt = gr.Textbox(label="Prompt", placeholder="Enter your prompt here...")
-                negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="What you don't want in the image...")
+                # prompt = gr.Textbox(label="Prompt", placeholder="Enter your prompt here...")
+                # negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="What you don't want in the image...")
                 with gr.Row():
                     guidance_scale = gr.Slider(minimum=1, maximum=20, value=7.5, step=0.5, label="Guidance Scale")
                     steps = gr.Slider(minimum=1, maximum=100, value=30, step=1, label="Number of Steps")
@@ -24,10 +25,10 @@ def create_gradio_interface(pipeline_with_lora):
 
         # Action for button click
         generate_btn.click(
-            fn=lambda prompt, neg_prompt, gs, steps, img: generate_image_with_lora(
-                pipeline_with_lora, prompt, neg_prompt, gs, steps, img
+            fn=lambda gs, steps, img: generate_image_with_lora(
+                pipeline_with_lora, PROMPT, NPROMPT, gs, steps, img
             ),
-            inputs=[prompt, negative_prompt, guidance_scale, steps, input_image],
+            inputs=[guidance_scale, steps, input_image],
             outputs=output_image
         )
 
