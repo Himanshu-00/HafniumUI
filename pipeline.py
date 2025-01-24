@@ -28,7 +28,7 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                 num_inference_steps=num_steps,
                 image=input_image,
                 mask_image=mask
-            ).images[0]
+            ).images[1]
         
         print("Image generated successfully.")
         return image

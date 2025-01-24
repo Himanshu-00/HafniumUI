@@ -93,5 +93,6 @@ NPROMPT = """
 "Ensure a conservative, solid-color necktie in navy blue or charcoal gray, neatly knotted at the collar, with a matte, non-reflective finish."
 "The tie width must be proportional to the suit lapels, positioned centrally for a polished appearance."
 "Avoid body positions or angles that distort the natural upright posture; the subject must face the camera with no extreme tilts or unusual rotations."
+"No disproportionate body shapes, no stretched or compressed limbs, no irregular shoulder widths, no unnatural silhouettes, no distorted anatomy, no warped proportions."
 
 """ 
