@@ -30,6 +30,7 @@ The image is captured in a medium shot, 8K HDR, showcasing the refined elegance 
 
 """
 
+
 PROMPT1 = """
 
 A photorealistic portrait of a 23-year-old male model from Brazil, dressed in a tailored charcoal suit and matching tie that conveys sophistication.
@@ -60,15 +61,6 @@ PROMPT4 = """
 
 
 """
-
-
-
-
-
-
-
-
-
 
 
 
