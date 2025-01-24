@@ -46,9 +46,20 @@ The image is captured in a close-up shot, 8K HDR, reflecting the suit's elegance
 
 """
 
-PROMPT3 = """"""
+PROMPT3 = """
 
-PROMPT4 = """"""
+A photorealistic portrait of a 23-year-old male model from Japan, showcasing a tailored black suit and matching tie that radiates confidence. 
+He is set against a deep blue background in a contemporary photo studio, with strategic lighting that highlights the suit's sharp lines and luxurious fabric. 
+The image is captured in a full-body shot, 8K HDR, illustrating the suit's sophisticated design.
+
+"""
+
+PROMPT4 = """
+
+
+
+
+"""
 
 
 
