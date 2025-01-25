@@ -1,11 +1,10 @@
-# gradio_interface.py
 import gradio as gr
 from pipeline import generate_image_with_lora
 from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    with gr.Blocks(theme=gr.themes.Monochrome()) as HafniumUI:  # Use Monochrome theme here
-        gr.Markdown("# SDXL with LoRA Integration and Inpainting", color="white")  # Markdown in white text
+    with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:  # Apply Citrus theme here
+        gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
         # Row with two columns
         with gr.Row():
@@ -23,8 +22,7 @@ def create_gradio_interface(pipeline_with_lora):
                     ],
                     label="Select Professional Suit Color",
                     value="Charcoal (#3b3b3b)",  # Set default value to Charcoal
-                    interactive=True,
-                    style={"color": "white"}  # Ensure the text color is white to match the dark theme
+                    interactive=True
                 )
                 
                 # Slider for guidance scale and steps
@@ -41,11 +39,6 @@ def create_gradio_interface(pipeline_with_lora):
 
             # Action for button click
             generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
-            
-            # Use the update method to style the button
-            generate_btn.update(
-                background_color="#00008B", text_color="white", hover_background_color="#0000CD"
-            )
             
             # Button functionality
             generate_btn.click(
