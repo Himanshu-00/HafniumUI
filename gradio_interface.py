@@ -1,5 +1,4 @@
 # gradio_interface.py
-# gradio_interface.py
 import gradio as gr
 from pipeline import generate_image_with_lora
 from config import NPROMPT
