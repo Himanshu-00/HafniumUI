@@ -58,29 +58,29 @@ from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
     with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:
-        # Inject custom CSS to force dark mode and apply styling
+        # Inject custom CSS to apply styling
         HafniumUI.css = """
             body {
-                background-color: #121212 !important;
-                color: #ffffff !important;
+                background-color: #ffffff !important;
+                color: #000000 !important;
             }
             .gradio-container {
-                background-color: #121212 !important;
-                color: #ffffff !important;
+                background-color: #ffffff !important;
+                color: #000000 !important;
             }
             .gradio-interface {
-                background-color: #121212 !important;
+                background-color: #ffffff !important;
             }
             .gradio-button {
                 background-color: #6200ea !important;
                 color: white !important;
-                border-radius: 12px !important;  # Apply rounded corners to buttons
+                border-radius: 20px !important;  # Make button corners more rounded
             }
             .gradio-radio, .gradio-slider, .gradio-button {
-                border-radius: 10px !important;  # Apply rounded corners to radio, slider, and button
+                border-radius: 20px !important;  # Increase border radius for radio, slider, and button
             }
             .gradio-image img {
-                border-radius: 15px !important;  # Apply rounded corners to image
+                border-radius: 20px !important;  # Apply more rounded corners to image
             }
         """
 
