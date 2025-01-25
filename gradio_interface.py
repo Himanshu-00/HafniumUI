@@ -4,7 +4,14 @@ from pipeline import generate_image_with_lora
 from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:  # Apply Citrus theme here
+    with gr.Blocks(theme=gr.themes.Citrus(), css="""
+        .gradio-container {
+            border-radius: 20px;
+        }
+        .gradio-button, .gradio-slider, .gradio-image, .gradio-radio {
+            border-radius: 20px !important;
+        }
+    """) as HafniumUI:  # Apply Citrus theme here
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
         # Row with two columns
