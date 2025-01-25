@@ -37,9 +37,9 @@ def create_gradio_interface(pipeline_with_lora):
                 
                 # Add a new slider for the number of images to generate
                 num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs")
-
-            # Action for button click
-            generate_btn = gr.Button("Generate Image with LoRA")
+                # Action for button click
+                generate_btn = gr.Button("Generate Image with LoRA")
+ 
             
             generate_btn.click(
                 fn=lambda color, gs, steps, img, num_outputs: generate_image_with_lora(
