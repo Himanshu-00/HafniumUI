@@ -15,7 +15,16 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
             raise Exception("Please provide a prompt.")
 
         print(f"Generating image with prompt: '{prompt}', negative prompt: '{negative_prompt}', guidance scale: {guidance_scale}, and steps: {num_steps}.")
-        input_image = Image.fromarray(input_image).convert("RGB")
+
+
+       # Ensure the input image is in PIL format
+        if isinstance(input_image, np.ndarray):  # If input image is numpy array
+            input_image = Image.fromarray(input_image).convert("RGB")
+        elif isinstance(input_image, Image.Image):  # If input image is already PIL
+            input_image = input_image.convert("RGB")
+        else:
+            raise Exception("Invalid image format. Please provide a valid image.")
+
 
         # Segment the input image using rembg and YOLO for face detection
         mask = segment_and_refine_mask(input_image)
