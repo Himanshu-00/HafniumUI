@@ -4,7 +4,10 @@ from pipeline import generate_image_with_lora
 from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    with gr.Blocks(theme=gr.themes.Monochrome()) as HafniumUI:  # Use Monochrome theme here
+    with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:  # Use Citrus theme here
+        # Apply custom dark background
+        HafniumUI.style(background_color="#121212")  # Set a dark background color for the entire interface
+
         gr.Markdown("# SDXL with LoRA Integration and Inpainting", color="white")  # Markdown in white text
 
         # Row with two columns
@@ -34,16 +37,16 @@ def create_gradio_interface(pipeline_with_lora):
                 
             # Right side column for output image
             with gr.Column():
-                output_image = gr.Image(label="Generated Image", elem_id="output_image")
+                output_image = gr.Image(label="Generated Image", elem_id="output_image", width=600)
 
                 # Add a new slider for the number of images to generate
                 num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs", interactive=True)
-
-            # Action for button click
-            generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
-            
-            # Apply dark blue color to the button
-            generate_btn.style(background_color="#00008B", text_color="white", hover_background_color="#0000CD")
+                     # Action for button click
+                generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
+                
+                # Apply dark blue color to the button
+                generate_btn.style(background_color="#00008B", text_color="white", hover_background_color="#0000CD")
+                
             
             # Button functionality
             generate_btn.click(
