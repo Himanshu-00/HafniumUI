@@ -52,88 +52,19 @@
 #     return HafniumUI
 
 
-import gradio as gr 
-from pipeline import generate_image_with_lora 
-from config import NPROMPT  
+import gradio as gr
+from pipeline import generate_image_with_lora
+from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    # Define dark and light mode CSS
-    dark_mode_css = """
-        body {
-            background-color: #121212 !important;
-            color: #ffffff !important;
-        }
-        .gradio-container {
-            background-color: #121212 !important;
-            color: #ffffff !important;
-        }
-        .gradio-interface {
-            background-color: #1e1e1e !important;
-        }
-        .gradio-button {
-            background-color: #bb86fc !important;
-            color: #000000 !important;
-            border-radius: 20px !important;
-        }
-        .gradio-radio, .gradio-slider, .gradio-button {
-            border-radius: 20px !important;
-        }
-        .gradio-image img {
-            border-radius: 20px !important;
-        }
-        /* Additional dark mode specific styles */
-        .dark-mode input, 
-        .dark-mode select, 
-        .dark-mode textarea {
-            background-color: #2c2c2c !important;
-            color: #ffffff !important;
-            border-color: #444 !important;
-        }
-    """
-
-    light_mode_css = """
-        body {
-            background-color: #ffffff !important;
-            color: #000000 !important;
-        }
-        .gradio-container {
-            background-color: #ffffff !important;
-            color: #000000 !important;
-        }
-        .gradio-interface {
-            background-color: #ffffff !important;
-        }
-        .gradio-button {
-            background-color: #6200ea !important;
-            color: white !important;
-            border-radius: 20px !important;
-        }
-        .gradio-radio, .gradio-slider, .gradio-button {
-            border-radius: 20px !important;
-        }
-        .gradio-image img {
-            border-radius: 20px !important;
-        }
-    """
-
-    with gr.Blocks(theme=gr.themes.Soft()) as HafniumUI:
-        # Theme toggle
-        mode_toggle = gr.Radio(
-            choices=["Light Mode", "Dark Mode"], 
-            label="Interface Theme", 
-            value="Light Mode"
-        )
-
-        # Dynamic CSS application
-        mode_toggle.change(
-            fn=lambda mode: light_mode_css if mode == "Light Mode" else dark_mode_css, 
-            inputs=mode_toggle, 
-            outputs=HafniumUI.css
-        )
-
-        # Set initial CSS to light mode
-        HafniumUI.css = light_mode_css
-
+    with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:
+        # Inject custom CSS for rounded corners with a 35px radius
+        HafniumUI.css = """
+            .gradio-button, .gradio-radio, .gradio-slider, .gradio-image img {
+                border-radius: 35px !important;
+            }
+        """
+        
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
         # Row with two columns
