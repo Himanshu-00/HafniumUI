@@ -58,7 +58,7 @@ from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
     with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:
-        # Inject custom CSS to force dark mode
+        # Inject custom CSS to force dark mode and apply styling
         HafniumUI.css = """
             body {
                 background-color: #121212 !important;
@@ -74,12 +74,13 @@ def create_gradio_interface(pipeline_with_lora):
             .gradio-button {
                 background-color: #6200ea !important;
                 color: white !important;
-            }
-            .gradio-image img {
-                border-radius: 15px !important;  # Apply rounded corners to image
+                border-radius: 12px !important;  # Apply rounded corners to buttons
             }
             .gradio-radio, .gradio-slider, .gradio-button {
                 border-radius: 10px !important;  # Apply rounded corners to radio, slider, and button
+            }
+            .gradio-image img {
+                border-radius: 15px !important;  # Apply rounded corners to image
             }
         """
 
@@ -101,28 +102,23 @@ def create_gradio_interface(pipeline_with_lora):
                     ],
                     label="Select Professional Suit Color",
                     value="Charcoal (#3b3b3b)",  # Set default value to Charcoal
-                    interactive=True,
-                    style={"border-radius": "10px", "color": "white"}  # Rounded corners and white text
+                    interactive=True
                 )
                 
                 # Slider for guidance scale and steps
                 with gr.Row():
-                    guidance_scale = gr.Slider(minimum=1, maximum=20, value=7.5, step=0.5, label="Guidance Scale", interactive=True, 
-                                               style={"border-radius": "10px"})
-                    steps = gr.Slider(minimum=1, maximum=100, value=30, step=1, label="Number of Steps", interactive=True, 
-                                      style={"border-radius": "10px"})
+                    guidance_scale = gr.Slider(minimum=1, maximum=20, value=7.5, step=0.5, label="Guidance Scale", interactive=True)
+                    steps = gr.Slider(minimum=1, maximum=100, value=30, step=1, label="Number of Steps", interactive=True)
                 
             # Right side column for output image
             with gr.Column():
                 output_image = gr.Image(label="Generated Image", elem_id="output_image")  # Removed style here
 
                 # Add a new slider for the number of images to generate
-                num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs", interactive=True, 
-                                        style={"border-radius": "10px"})
+                num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs", interactive=True)
 
             # Action for button click
-            generate_btn = gr.Button("Generate Image with LoRA", variant="primary", 
-                                     style={"border-radius": "12px"})  # Apply rounded corners
+            generate_btn = gr.Button("Generate Image with LoRA", variant="primary")  # Removed style here
 
             # Button functionality
             generate_btn.click(
