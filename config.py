@@ -24,7 +24,7 @@ else:
 
 PROMPT = """
 
-A photorealistic portrait of a 23-year-old male model from Canada, exuding professionalism in a tailored navy suit and a tie.
+A photorealistic portrait of a 23-year-old male model from Canada, exuding professionalism in a tailored navy suit and matching tie.
 He stands confidently against a sleek, light gray backdrop inside a modern photo studio, illuminated by soft, diffused lighting that enhances the suit's texture and fit. 
 The image is captured in a medium shot, 8K HDR, showcasing the refined elegance of his attire.
 
@@ -136,5 +136,28 @@ Facial Topography Requirements:
 Enforce direct, centered facial orientation
 Mandate neutral, professional emotional presentation
 Ensure precise eye alignment and authentic dermatological texture""
+
+"No distracting visual elements or cluttered backgrounds with complex patterns, busy textures, or elements that draw attention away from the subject."
+"No low-resolution, pixelated, blurry, or out-of-focus images; the image must maintain sharp, high-definition details."
+"No stylized, cartoon-like, illustrated, painterly, or non-photorealistic rendering styles; the output must appear entirely realistic."
+"No exaggerated facial expressions, dramatic makeup, extreme contouring, or overly styled, unnatural-looking hair."
+"No informal, wrinkled, ill-fitting, or inappropriate clothing; avoid casual wear, visible logos, flashy designs, or distracting accessories."
+"No harsh, uneven, or extreme lighting conditions; avoid overexposure, harsh shadows, lens flares, or dramatic contrasts."
+"No environmental context or busy backgrounds; the image must have a simple, controlled studio-like setting."
+"No perspective distortions, unflattering camera angles, or unnatural proportions; ensure a direct, centered, and balanced view."
+"No heavy post-processing, unnatural color grading, or excessive digital manipulation; maintain a natural and realistic aesthetic."
+"No dynamic or candid poses; the subject must maintain a neutral, professional, and controlled posture."
+"No facial orientation other than a direct, centered front-facing view with a neutral and professional expression."
+"No visible body tilt or unnatural inclinations; ensure upright body alignment without extreme angles (e.g., no 100-degree or diagonal tilt)."
+"No unnatural hand positioning or gestures; hands, if visible, must rest naturally without appearing forced or awkward."
+"No bold, patterned, reflective, or unconventional neckwear; decorative or alternative styles are to be avoided."
+"Maintain precise, anatomically correct body proportions, with natural shoulder width and limb length."
+"No visual stretching or compression of body parts; preserve a natural human silhouette."
+"Ensure a conservative, solid-color necktie in navy blue or charcoal gray, neatly knotted at the collar, with a matte, non-reflective finish."
+"The tie width must be proportional to the suit lapels, positioned centrally for a polished appearance."
+"Avoid body positions or angles that distort the natural upright posture; the subject must face the camera with no extreme tilts or unusual rotations."
+"No disproportionate body shapes, no stretched or compressed limbs, no irregular shoulder widths, no unnatural silhouettes, no distorted anatomy, no warped proportions."
+
+
 
 """
