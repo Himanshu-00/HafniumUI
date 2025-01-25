@@ -4,8 +4,8 @@ from pipeline import generate_image_with_lora
 from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    with gr.Blocks(theme="dark") as HafniumUI:  # Apply dark theme here
-        gr.Markdown("# SDXL with LoRA Integration and Inpainting")
+    with gr.Blocks(theme=gr.themes.Monochrome()) as HafniumUI:  # Use Monochrome theme here
+        gr.Markdown("# SDXL with LoRA Integration and Inpainting", color="white")  # Markdown in white text
 
         # Row with two columns
         with gr.Row():
@@ -22,21 +22,22 @@ def create_gradio_interface(pipeline_with_lora):
                         "Light Gray (#D3D3D3)", "Olive Green (#808000)", "Royal Blue (#4169E1)"
                     ],
                     label="Select Professional Suit Color",
-                    value="Charcoal (#3b3b3b)",  # Set default value to Charcoal
-                    interactive=True
+                    value="Navy Blue (#000080)",  # Set default value to Charcoal
+                    interactive=True,
+                    style={"color": "white"}  # Ensure the text color is white to match the dark theme
                 )
                 
                 # Slider for guidance scale and steps
                 with gr.Row():
-                    guidance_scale = gr.Slider(minimum=1, maximum=20, value=7.5, step=0.5, label="Guidance Scale")
-                    steps = gr.Slider(minimum=1, maximum=100, value=30, step=1, label="Number of Steps")
+                    guidance_scale = gr.Slider(minimum=1, maximum=20, value=7.5, step=0.5, label="Guidance Scale", interactive=True)
+                    steps = gr.Slider(minimum=1, maximum=100, value=30, step=1, label="Number of Steps", interactive=True)
                 
             # Right side column for output image
             with gr.Column():
-                output_image = gr.Image(label="Generated Image")
-                
+                output_image = gr.Image(label="Generated Image", elem_id="output_image")
+
                 # Add a new slider for the number of images to generate
-                num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs")
+                num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs", interactive=True)
 
             # Action for button click
             generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
@@ -44,6 +45,7 @@ def create_gradio_interface(pipeline_with_lora):
             # Apply dark blue color to the button
             generate_btn.style(background_color="#00008B", text_color="white", hover_background_color="#0000CD")
             
+            # Button functionality
             generate_btn.click(
                 fn=lambda color, gs, steps, img, num_outputs: generate_image_with_lora(
                     pipeline_with_lora, prompt=color, negative_prompt=NPROMPT, guidance_scale=gs, num_steps=steps, input_image=img
