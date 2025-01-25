@@ -41,8 +41,10 @@ def create_gradio_interface(pipeline_with_lora):
             # Action for button click
             generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
             
-            # Apply citrus-like colors to the button
-            generate_btn.style(background_color="#FFEB3B", text_color="black", hover_background_color="#FFC107")
+            # Update button appearance dynamically with a background color change
+            generate_btn.update(
+                background_color="#FFEB3B", text_color="black", hover_background_color="#FFC107"
+            )
             
             generate_btn.click(
                 fn=lambda color, gs, steps, img, num_outputs: generate_image_with_lora(
