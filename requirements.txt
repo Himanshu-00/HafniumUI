@@ -3,7 +3,7 @@ diffusers
 safetensors
 ultralytics
 rembg
-gradio==3.41.2
+gradio
 Pillow
 numpy
 rembg
