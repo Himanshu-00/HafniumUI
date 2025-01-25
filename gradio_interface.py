@@ -1,16 +1,17 @@
 # gradio_interface.py
+# gradio_interface.py
 import gradio as gr
 from pipeline import generate_image_with_lora
 from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:  # Use Citrus theme here
-        # Apply custom dark background
-        HafniumUI.style(background_color="#121212")  # Set a dark background color for the entire interface
+    with gr.Blocks(theme=gr.themes.Base()) as HafniumUI:  # Apply Base theme for dark mode first
+        gr.Markdown("# SDXL with LoRA Integration and Inpainting", color="white")  # Markdown text in white for better contrast
 
-        gr.Markdown("# SDXL with LoRA Integration and Inpainting", color="white")  # Markdown in white text
-
-        # Row with two columns
+        # Set the background color for dark mode
+        HafniumUI.style(background_color="#121212")  # Dark background color
+        
+        # Apply Citrus theme to the button
         with gr.Row():
             # Left side column with input_image, color selection, guidance_scale, and steps
             with gr.Column():
@@ -25,7 +26,7 @@ def create_gradio_interface(pipeline_with_lora):
                         "Light Gray (#D3D3D3)", "Olive Green (#808000)", "Royal Blue (#4169E1)"
                     ],
                     label="Select Professional Suit Color",
-                    value="Navy Blue (#000080)",  # Set default value to Charcoal
+                    value="Charcoal (#3b3b3b)",  # Set default value to Charcoal
                     interactive=True,
                     style={"color": "white"}  # Ensure the text color is white to match the dark theme
                 )
@@ -37,16 +38,16 @@ def create_gradio_interface(pipeline_with_lora):
                 
             # Right side column for output image
             with gr.Column():
-                output_image = gr.Image(label="Generated Image", elem_id="output_image", width=600)
+                output_image = gr.Image(label="Generated Image", elem_id="output_image")
 
                 # Add a new slider for the number of images to generate
                 num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs", interactive=True)
-                     # Action for button click
-                generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
-                
-                # Apply dark blue color to the button
-                generate_btn.style(background_color="#00008B", text_color="white", hover_background_color="#0000CD")
-                
+
+            # Action for button click
+            generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
+            
+            # Apply Citrus theme to the button
+            generate_btn.style(background_color="#FFEB3B", text_color="black", hover_background_color="#FFC107")
             
             # Button functionality
             generate_btn.click(
