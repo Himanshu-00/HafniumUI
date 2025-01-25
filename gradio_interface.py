@@ -4,7 +4,7 @@ from pipeline import generate_image_with_lora
 from config import PROMPT, NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    with gr.Blocks() as HeliumUI:
+    with gr.Blocks() as HafniumUI:
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
         # Row with two columns
@@ -32,4 +32,4 @@ def create_gradio_interface(pipeline_with_lora):
             outputs=output_image
         )
 
-    return HeliumUI
+    return HafniumUI
