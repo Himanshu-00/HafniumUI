@@ -4,7 +4,7 @@ from pipeline import generate_image_with_lora
 from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:  # Apply Citrus theme here
+    with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:  # Apply citrus theme
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
         # Row with two columns
@@ -41,7 +41,7 @@ def create_gradio_interface(pipeline_with_lora):
             # Action for button click
             generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
             
-            # Apply Citrus theme to the button
+            # Apply citrus-like colors to the button
             generate_btn.style(background_color="#FFEB3B", text_color="black", hover_background_color="#FFC107")
             
             generate_btn.click(
