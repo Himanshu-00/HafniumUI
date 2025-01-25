@@ -66,25 +66,72 @@ PROMPT4 = """
 
 NPROMPT = """
 
-"No distracting visual elements or cluttered backgrounds with complex patterns, busy textures, or elements that draw attention away from the subject."
-"No low-resolution, pixelated, blurry, or out-of-focus images; the image must maintain sharp, high-definition details."
-"No stylized, cartoon-like, illustrated, painterly, or non-photorealistic rendering styles; the output must appear entirely realistic."
-"No exaggerated facial expressions, dramatic makeup, extreme contouring, or overly styled, unnatural-looking hair."
-"No informal, wrinkled, ill-fitting, or inappropriate clothing; avoid casual wear, visible logos, flashy designs, or distracting accessories."
-"No harsh, uneven, or extreme lighting conditions; avoid overexposure, harsh shadows, lens flares, or dramatic contrasts."
-"No environmental context or busy backgrounds; the image must have a simple, controlled studio-like setting."
-"No perspective distortions, unflattering camera angles, or unnatural proportions; ensure a direct, centered, and balanced view."
-"No heavy post-processing, unnatural color grading, or excessive digital manipulation; maintain a natural and realistic aesthetic."
-"No dynamic or candid poses; the subject must maintain a neutral, professional, and controlled posture."
-"No facial orientation other than a direct, centered front-facing view with a neutral and professional expression."
-"No visible body tilt or unnatural inclinations; ensure upright body alignment without extreme angles (e.g., no 100-degree or diagonal tilt)."
-"No unnatural hand positioning or gestures; hands, if visible, must rest naturally without appearing forced or awkward."
-"No bold, patterned, reflective, or unconventional neckwear; decorative or alternative styles are to be avoided."
-"Maintain precise, anatomically correct body proportions, with natural shoulder width and limb length."
-"No visual stretching or compression of body parts; preserve a natural human silhouette."
-"Ensure a conservative, solid-color necktie in navy blue or charcoal gray, neatly knotted at the collar, with a matte, non-reflective finish."
-"The tie width must be proportional to the suit lapels, positioned centrally for a polished appearance."
-"Avoid body positions or angles that distort the natural upright posture; the subject must face the camera with no extreme tilts or unusual rotations."
-"No disproportionate body shapes, no stretched or compressed limbs, no irregular shoulder widths, no unnatural silhouettes, no distorted anatomy, no warped proportions."
+Visual Composition:
 
+No distracting, complex, or textured backgrounds
+Reject cluttered or non-uniform environments
+Eliminate busy patterns, decorative elements, or visual noise
+Mandate clean, minimalist studio-like setting with neutral backdrop
+
+Image Technical Specifications:
+
+Zero tolerance for low-resolution, pixelated, or blurry imagery
+Reject out-of-focus or degraded image quality
+Ensure razor-sharp, high-definition details
+Prevent excessive digital manipulation or unnatural post-processing
+Maintain pure photographic realism without artificial enhancement
+
+Subject Presentation:
+
+No exaggerated facial expressions or dramatic makeup
+Eliminate theatrical or artificial contouring
+Prohibit stylized, unrealistic hair treatments
+Enforce neutral, professional facial composure
+Mandate natural skin texture and complexion
+
+Clothing and Styling:
+
+Reject informal, wrinkled, or ill-fitting attire
+No visible logos, branded elements, or flashy designs
+Eliminate distracting accessories
+Require conservative, tailored professional wardrobe
+Ensure precise, clean clothing lines and fit
+
+Lighting and Exposure:
+
+Avoid harsh, uneven, or extreme lighting conditions
+Prevent overexposure, stark shadows, or dramatic light contrasts
+Mandate balanced, natural, soft illumination
+Eliminate lens flares, light artifacts, or unnatural highlights
+
+Body Positioning and Proportions:
+
+No perspective distortions or unflattering camera angles
+Enforce anatomically precise body proportions
+Require direct, centered, perfectly balanced frontal view
+Prohibit body tilts, unnatural rotations, or silhouette distortions
+Maintain exact shoulder width, limb length, and natural human anatomy
+
+Professional Accessory Guidelines:
+
+Conservative neckwear: solid navy or charcoal gray
+Matte, non-reflective tie finish
+Precise tie width matching suit lapel proportions
+Centrally positioned, perfectly knotted
+No decorative or unconventional tie styles
+
+Hand and Gesture Constraints:
+
+Eliminate unnatural hand positioning
+Mandate relaxed, organic hand placement
+Prevent forced or artificially posed gestures
+Ensure hands appear naturally positioned if visible
+
+Facial and Expression Parameters:
+
+Strictly front-facing view
+Neutral, professional facial expression
+No emotional exaggeration
+Precise eye focus and alignment
+Natural skin tone and texture""
 """ 

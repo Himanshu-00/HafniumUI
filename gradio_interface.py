@@ -22,25 +22,25 @@ def create_gradio_interface(pipeline_with_lora):
                         "Light Gray (#D3D3D3)", "Olive Green (#808000)", "Royal Blue (#4169E1)"
                     ],
                     label="Select Professional Suit Color",
-                    value="Charcoal (#3b3b3b)",  # Set default value to Charcoal
+                    value="Navy Blue (#000080)",  # Set default value to Charcoal
                     interactive=True
                 )
                 
                 # Slider for guidance scale and steps
                 with gr.Row():
                     guidance_scale = gr.Slider(minimum=1, maximum=20, value=7.5, step=0.5, label="Guidance Scale")
-                    steps = gr.Slider(minimum=1, maximum=100, value=30, step=1, label="Number of Steps")
+                    steps = gr.Slider(minimum=1, maximum=100, value=50, step=1, label="Number of Steps")
                 
             # Right side column for output image
             with gr.Column():
                 output_image = gr.Image(label="Generated Image")
                 
                 # Add a new slider for the number of images to generate
-                num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs")
+                num_outputs = gr.Slider(minimum=1, maximum=10, value=1, step=1, label="Number of Outputs")
                 # Action for button click
                 generate_btn = gr.Button("Generate Image with LoRA")
- 
-            
+
+
             generate_btn.click(
                 fn=lambda color, gs, steps, img, num_outputs: generate_image_with_lora(
                     pipeline_with_lora, prompt=color, negative_prompt=NPROMPT, guidance_scale=gs, num_steps=steps, input_image=img
