@@ -52,37 +52,87 @@
 #     return HafniumUI
 
 
-import gradio as gr
-from pipeline import generate_image_with_lora
-from config import NPROMPT
+import gradio as gr 
+from pipeline import generate_image_with_lora 
+from config import NPROMPT  
 
 def create_gradio_interface(pipeline_with_lora):
-    with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:
-        # Inject custom CSS to apply styling
-        HafniumUI.css = """
-            body {
-                background-color: #ffffff !important;
-                color: #000000 !important;
-            }
-            .gradio-container {
-                background-color: #ffffff !important;
-                color: #000000 !important;
-            }
-            .gradio-interface {
-                background-color: #ffffff !important;
-            }
-            .gradio-button {
-                background-color: #6200ea !important;
-                color: white !important;
-                border-radius: 20px !important;  # Make button corners more rounded
-            }
-            .gradio-radio, .gradio-slider, .gradio-button {
-                border-radius: 20px !important;  # Increase border radius for radio, slider, and button
-            }
-            .gradio-image img {
-                border-radius: 20px !important;  # Apply more rounded corners to image
-            }
-        """
+    # Define dark and light mode CSS
+    dark_mode_css = """
+        body {
+            background-color: #121212 !important;
+            color: #ffffff !important;
+        }
+        .gradio-container {
+            background-color: #121212 !important;
+            color: #ffffff !important;
+        }
+        .gradio-interface {
+            background-color: #1e1e1e !important;
+        }
+        .gradio-button {
+            background-color: #bb86fc !important;
+            color: #000000 !important;
+            border-radius: 20px !important;
+        }
+        .gradio-radio, .gradio-slider, .gradio-button {
+            border-radius: 20px !important;
+        }
+        .gradio-image img {
+            border-radius: 20px !important;
+        }
+        /* Additional dark mode specific styles */
+        .dark-mode input, 
+        .dark-mode select, 
+        .dark-mode textarea {
+            background-color: #2c2c2c !important;
+            color: #ffffff !important;
+            border-color: #444 !important;
+        }
+    """
+
+    light_mode_css = """
+        body {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+        }
+        .gradio-container {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+        }
+        .gradio-interface {
+            background-color: #ffffff !important;
+        }
+        .gradio-button {
+            background-color: #6200ea !important;
+            color: white !important;
+            border-radius: 20px !important;
+        }
+        .gradio-radio, .gradio-slider, .gradio-button {
+            border-radius: 20px !important;
+        }
+        .gradio-image img {
+            border-radius: 20px !important;
+        }
+    """
+
+    with gr.Blocks(theme=gr.themes.Soft()) as HafniumUI:
+        # Theme toggle
+        mode_toggle = gr.Radio(
+            choices=["Light Mode", "Dark Mode"], 
+            label="Interface Theme", 
+            value="Light Mode"
+        )
+
+        # Dynamic CSS application
+        mode_toggle.change(
+            fn=lambda mode: light_mode_css if mode == "Light Mode" else dark_mode_css, 
+            inputs=mode_toggle, 
+            outputs=HafniumUI.css
+        )
+
+        # Set initial CSS to light mode
+        HafniumUI.css = light_mode_css
 
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
@@ -90,43 +140,57 @@ def create_gradio_interface(pipeline_with_lora):
         with gr.Row():
             # Left side column with input_image, color selection, guidance_scale, and steps
             with gr.Column():
-                input_image = gr.Image(label="Input Image", type="pil", elem_id="input_image")  # Removed style here
+                input_image = gr.Image(label="Input Image", type="pil", elem_id="input_image")
 
-                # Add more color options for suit colors with Charcoal as the default
+                # Color picker with expanded options
                 color_picker = gr.Radio(
                     choices=[
-                        "Charcoal (#3b3b3b)", "Black (#000000)", "Navy Blue (#000080)", 
-                        "Gray (#808080)", "White (#FFFFFF)", "Dark Brown (#654321)", 
-                        "Burgundy (#800020)", "Dark Green (#006400)", "Beige (#F5F5DC)", 
+                        "Charcoal (#3b3b3b)", "Black (#000000)", "Navy Blue (#000080)",
+                        "Gray (#808080)", "White (#FFFFFF)", "Dark Brown (#654321)",
+                        "Burgundy (#800020)", "Dark Green (#006400)", "Beige (#F5F5DC)",
                         "Light Gray (#D3D3D3)", "Olive Green (#808000)", "Royal Blue (#4169E1)"
                     ],
                     label="Select Professional Suit Color",
-                    value="Charcoal (#3b3b3b)",  # Set default value to Charcoal
+                    value="Charcoal (#3b3b3b)",
                     interactive=True
                 )
-                
+
                 # Slider for guidance scale and steps
                 with gr.Row():
-                    guidance_scale = gr.Slider(minimum=1, maximum=20, value=7.5, step=0.5, label="Guidance Scale", interactive=True)
-                    steps = gr.Slider(minimum=1, maximum=100, value=30, step=1, label="Number of Steps", interactive=True)
-                
+                    guidance_scale = gr.Slider(
+                        minimum=1, maximum=20, value=7.5, step=0.5, 
+                        label="Guidance Scale", interactive=True
+                    )
+                    steps = gr.Slider(
+                        minimum=1, maximum=100, value=30, step=1, 
+                        label="Number of Steps", interactive=True
+                    )
+
             # Right side column for output image
             with gr.Column():
-                output_image = gr.Image(label="Generated Image", elem_id="output_image")  # Removed style here
+                output_image = gr.Image(label="Generated Image", elem_id="output_image")
 
-                # Add a new slider for the number of images to generate
-                num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs", interactive=True)
+                # Slider for number of outputs
+                num_outputs = gr.Slider(
+                    minimum=1, maximum=5, value=1, step=1, 
+                    label="Number of Outputs", interactive=True
+                )
 
-            # Action for button click
-            generate_btn = gr.Button("Generate Image with LoRA", variant="primary")  # Removed style here
+        # Generate button
+        generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
 
-            # Button functionality
-            generate_btn.click(
-                fn=lambda color, gs, steps, img, num_outputs: generate_image_with_lora(
-                    pipeline_with_lora, prompt=color, negative_prompt=NPROMPT, guidance_scale=gs, num_steps=steps, input_image=img
-                ),
-                inputs=[color_picker, guidance_scale, steps, input_image, num_outputs],
-                outputs=output_image
-            )
+        # Button functionality
+        generate_btn.click(
+            fn=lambda color, gs, steps, img, num_outputs: generate_image_with_lora(
+                pipeline_with_lora, 
+                prompt=color, 
+                negative_prompt=NPROMPT, 
+                guidance_scale=gs, 
+                num_steps=steps, 
+                input_image=img
+            ),
+            inputs=[color_picker, guidance_scale, steps, input_image, num_outputs],
+            outputs=output_image
+        )
 
     return HafniumUI
