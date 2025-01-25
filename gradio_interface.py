@@ -57,7 +57,26 @@ from pipeline import generate_image_with_lora
 from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    with gr.Blocks(theme=gr.themes.Citrus(), dark_mode=True) as HafniumUI:  # Apply Citrus theme and enable dark mode
+    with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:
+        # Inject CSS to force dark mode
+        HafniumUI.css = """
+            body {
+                background-color: #121212;
+                color: #ffffff;
+            }
+            .gradio-container {
+                background-color: #121212 !important;
+                color: #ffffff !important;
+            }
+            .gradio-interface {
+                background-color: #121212 !important;
+            }
+            .gradio-button {
+                background-color: #6200ea !important;
+                color: white !important;
+            }
+        """
+
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
         # Row with two columns
@@ -111,4 +130,3 @@ def create_gradio_interface(pipeline_with_lora):
             )
 
     return HafniumUI
-
