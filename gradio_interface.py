@@ -6,7 +6,7 @@ from config import NPROMPT
 def create_gradio_interface(pipeline_with_lora):
     with gr.Blocks(theme=gr.themes.Citrus(), css="""
         .gradio-container {
-            border-radius: 20px;
+            border-radius: 40px;
         }
         .gradio-button, .gradio-slider, .gradio-image, .gradio-radio {
             border-radius: 20px !important;
