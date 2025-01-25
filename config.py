@@ -66,72 +66,75 @@ PROMPT4 = """
 
 NPROMPT = """
 
-Visual Composition:
+Body Proportion Anomaly Rejection:
 
-No distracting, complex, or textured backgrounds
-Reject cluttered or non-uniform environments
-Eliminate busy patterns, decorative elements, or visual noise
-Mandate clean, minimalist studio-like setting with neutral backdrop
+Absolute prohibition of unnatural body proportions
+Eliminate symmetry disruptions or anatomical inconsistencies
+Reject any non-standard limb-to-torso ratios
+Prevent skeletal structure distortions
+Zero tolerance for:
 
-Image Technical Specifications:
+Disproportionate shoulder widths
+Unnaturally elongated or compressed limbs
+Irregular torso-to-leg length relationships
+Unnatural neck-to-shoulder connections
+Biomechanically impossible joint alignments
 
-Zero tolerance for low-resolution, pixelated, or blurry imagery
-Reject out-of-focus or degraded image quality
-Ensure razor-sharp, high-definition details
-Prevent excessive digital manipulation or unnatural post-processing
-Maintain pure photographic realism without artificial enhancement
+Visual Composition Constraints:
 
-Subject Presentation:
+Absolute prohibition of distracting, complex backgrounds
+Total elimination of visual noise and textural complexity
+Mandate pristine, monochromatic studio environment
+Enforce minimalist neutral backdrop
 
-No exaggerated facial expressions or dramatic makeup
-Eliminate theatrical or artificial contouring
-Prohibit stylized, unrealistic hair treatments
-Enforce neutral, professional facial composure
-Mandate natural skin texture and complexion
+Technical Image Specifications:
 
-Clothing and Styling:
+Complete rejection of low-resolution, pixelated imagery
+Stringent ultra-high-definition clarity requirements
+Prevent digital manipulation artifacts
+Enforce naturalistic photographic reproduction
 
-Reject informal, wrinkled, or ill-fitting attire
-No visible logos, branded elements, or flashy designs
-Eliminate distracting accessories
-Require conservative, tailored professional wardrobe
-Ensure precise, clean clothing lines and fit
+Subject Presentation Parameters:
 
-Lighting and Exposure:
+Suppress exaggerated facial dynamics
+Prohibit theatrical makeup and artificial contouring
+Mandate organic skin texture and neutral professional appearance
 
-Avoid harsh, uneven, or extreme lighting conditions
-Prevent overexposure, stark shadows, or dramatic light contrasts
-Mandate balanced, natural, soft illumination
-Eliminate lens flares, light artifacts, or unnatural highlights
+Wardrobe and Styling Directives:
 
-Body Positioning and Proportions:
+Zero acceptance of informal or inappropriate attire
+Complete exclusion of branded elements
+Mandate precision-tailored professional vestments
 
-No perspective distortions or unflattering camera angles
-Enforce anatomically precise body proportions
-Require direct, centered, perfectly balanced frontal view
-Prohibit body tilts, unnatural rotations, or silhouette distortions
-Maintain exact shoulder width, limb length, and natural human anatomy
+Illumination and Exposure Guidelines:
 
-Professional Accessory Guidelines:
+Reject non-uniform or harsh lighting configurations
+Prevent shadow artifacts and lens aberrations
+Mandate soft, balanced, naturalistic light distribution
 
-Conservative neckwear: solid navy or charcoal gray
-Matte, non-reflective tie finish
-Precise tie width matching suit lapel proportions
-Centrally positioned, perfectly knotted
-No decorative or unconventional tie styles
+Anatomical Alignment Specifications:
 
-Hand and Gesture Constraints:
+Prohibit perspective-induced bodily distortions
+Enforce mathematically accurate human proportionality
+Mandate symmetrical, frontally-centered positioning
+Ensure exact replication of natural human biomechanics
 
-Eliminate unnatural hand positioning
-Mandate relaxed, organic hand placement
-Prevent forced or artificially posed gestures
-Ensure hands appear naturally positioned if visible
+Professional Accessory Protocols:
 
-Facial and Expression Parameters:
+Exclusive acceptance of conservative neckwear
+Specify matte-finish ties in precise color ranges
+Enforce mathematically proportional accessory ratios
 
-Strictly front-facing view
-Neutral, professional facial expression
-No emotional exaggeration
-Precise eye focus and alignment
-Natural skin tone and texture""
-""" 
+Gestural and Positional Refinements:
+
+Eliminate unnatural hand configurations
+Mandate organically relaxed, authentic hand placement
+Prevent artificially induced postural artifacts
+
+Facial Topography Requirements:
+
+Enforce direct, centered facial orientation
+Mandate neutral, professional emotional presentation
+Ensure precise eye alignment and authentic dermatological texture""
+
+"""
