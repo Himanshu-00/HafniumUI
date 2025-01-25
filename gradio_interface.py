@@ -42,8 +42,10 @@ def create_gradio_interface(pipeline_with_lora):
             # Action for button click
             generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
             
-            # Apply dark blue color to the button
-            generate_btn.style(background_color="#00008B", text_color="white", hover_background_color="#0000CD")
+            # Use the update method to style the button
+            generate_btn.update(
+                background_color="#00008B", text_color="white", hover_background_color="#0000CD"
+            )
             
             # Button functionality
             generate_btn.click(
