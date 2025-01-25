@@ -58,11 +58,11 @@ from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
     with gr.Blocks(theme=gr.themes.Citrus()) as HafniumUI:
-        # Inject CSS to force dark mode
+        # Inject custom CSS to force dark mode
         HafniumUI.css = """
             body {
-                background-color: #121212;
-                color: #ffffff;
+                background-color: #121212 !important;
+                color: #ffffff !important;
             }
             .gradio-container {
                 background-color: #121212 !important;
@@ -75,6 +75,12 @@ def create_gradio_interface(pipeline_with_lora):
                 background-color: #6200ea !important;
                 color: white !important;
             }
+            .gradio-image img {
+                border-radius: 15px !important;  # Apply rounded corners to image
+            }
+            .gradio-radio, .gradio-slider, .gradio-button {
+                border-radius: 10px !important;  # Apply rounded corners to radio, slider, and button
+            }
         """
 
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
@@ -83,9 +89,8 @@ def create_gradio_interface(pipeline_with_lora):
         with gr.Row():
             # Left side column with input_image, color selection, guidance_scale, and steps
             with gr.Column():
-                input_image = gr.Image(label="Input Image", type="pil", elem_id="input_image", 
-                                       style={"border-radius": "15px"})  # Apply rounded corners
-                
+                input_image = gr.Image(label="Input Image", type="pil", elem_id="input_image")  # Removed style here
+
                 # Add more color options for suit colors with Charcoal as the default
                 color_picker = gr.Radio(
                     choices=[
@@ -109,8 +114,7 @@ def create_gradio_interface(pipeline_with_lora):
                 
             # Right side column for output image
             with gr.Column():
-                output_image = gr.Image(label="Generated Image", elem_id="output_image", 
-                                        style={"border-radius": "15px"})  # Apply rounded corners
+                output_image = gr.Image(label="Generated Image", elem_id="output_image")  # Removed style here
 
                 # Add a new slider for the number of images to generate
                 num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs", interactive=True, 
