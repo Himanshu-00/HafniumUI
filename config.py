@@ -71,8 +71,7 @@ Body Proportion Anomaly Rejection:
 Absolute prohibition of unnatural body proportions
 Eliminate symmetry disruptions or anatomical inconsistencies
 Reject any non-standard limb-to-torso ratios
-Prevent skeletal structure distortions and 
-NO Side pose and No hands
+Prevent skeletal structure distortions
 
 
 Zero tolerance for:
@@ -141,6 +140,7 @@ Mandate neutral, professional emotional presentation
 Ensure precise eye alignment and authentic dermatological texture""
 
 "No distracting visual elements or cluttered backgrounds with complex patterns, busy textures, or elements that draw attention away from the subject."
+"No hands in output"
 "No low-resolution, pixelated, blurry, or out-of-focus images; the image must maintain sharp, high-definition details."
 "No stylized, cartoon-like, illustrated, painterly, or non-photorealistic rendering styles; the output must appear entirely realistic."
 "No exaggerated facial expressions, dramatic makeup, extreme contouring, or overly styled, unnatural-looking hair."
