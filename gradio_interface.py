@@ -4,11 +4,12 @@ from pipeline import generate_image_with_lora
 from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    theme = gr.themes.Soft(
-        primary_hue="blue", 
-        neutral_hue="slate",
-        radius_size="lg"  # Extra large rounded corners
-    )
+    theme = gr.themes.Soft().set(
+    button_primary_background_fill="#000080",  # Navy Blue
+    button_primary_background_fill_dark="#00004D",  # Darker Navy Blue for dark mode
+    button_primary_border="*button_primary_background_fill",
+    button_primary_border_dark="*button_primary_background_fill_dark",
+)
     with gr.Blocks(theme=theme) as HafniumUI: 
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
