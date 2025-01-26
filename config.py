@@ -72,7 +72,7 @@ Absolute prohibition of unnatural body proportions
 Eliminate symmetry disruptions or anatomical inconsistencies
 Reject any non-standard limb-to-torso ratios
 Prevent skeletal structure distortions and 
-NO Side pose 
+NO Side pose and No hands
 
 
 Zero tolerance for:
