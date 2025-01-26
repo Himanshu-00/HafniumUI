@@ -4,8 +4,11 @@ from pipeline import generate_image_with_lora
 from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    custom_theme = gr.themes.Citrus(dark=True)
-    with gr.Blocks(theme=custom_theme) as HafniumUI: 
+    theme = gr.themes.Soft(
+        primary_hue="blue", 
+        radius_size="lg"
+    )
+    with gr.Blocks(theme=theme) as HafniumUI: 
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
         # Row with two columns
