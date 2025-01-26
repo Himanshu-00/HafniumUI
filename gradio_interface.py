@@ -7,7 +7,7 @@ def create_gradio_interface(pipeline_with_lora):
     theme = gr.themes.Soft(
         primary_hue="blue", 
         neutral_hue="slate",
-        radius_size="xl"  # Extra large rounded corners
+        radius_size="lg"  # Extra large rounded corners
     )
     with gr.Blocks(theme=theme) as HafniumUI: 
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
