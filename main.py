@@ -5,20 +5,16 @@ if __name__ == "__main__":
     # Create the Gradio interface
     HeliumUI = create_gradio_interface(pipeline_with_lora)
     
-    # Launch the interface
-    launch_output = HeliumUI.launch(share=True, debug=True)
-    
-    # Extract local and public URLs from the launch output
-    local_url, public_url = launch_output[0], launch_output[1]
-    
-    # Print the loading message
+    # Launch the Gradio app and capture the URLs
     print("Model and LoRA weights successfully loaded and moved to device.")
-    
-    # Print the local URL
-    print(f"* Running on local URL:  {local_url}")
-    
-    # Print the public URL with the theme appended
-    if public_url:
-        print(f"* Running on public URL: {public_url}/?__theme=dark")
-    else:
-        print("Public URL not available. Ensure sharing is enabled.")
+    try:
+        local_url, public_url = HeliumUI.launch(share=True, debug=True)
+        
+        # Print the URLs with the dark theme appended to the public URL
+        print(f"* Running on local URL:  {local_url}")
+        if public_url:
+            print(f"* Running on public URL: {public_url}/?__theme=dark")
+        else:
+            print("Public URL not available. Ensure sharing is enabled.")
+    except Exception as e:
+        print(f"An error occurred while launching the Gradio app: {e}")
