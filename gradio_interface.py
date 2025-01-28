@@ -68,5 +68,3 @@ def create_gradio_interface(pipeline_with_lora):
             )
 
     return HafniumUI
-
-
