@@ -94,21 +94,27 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         except Exception as e:
             raise ValueError(f"Error in mask generation: {str(e)}")
 
+        # Create a list to store intermediate results
+        intermediate_images = []
+
         # Define callback for intermediate results
         def callback(step, timestep, latents):
             with torch.no_grad():
                 try:
                     image = pipeline.decode_latents(latents)
                     image = pipeline.numpy_to_pil(image)[0]
-                    yield image
+                    intermediate_images.append(image)
                 except Exception as e:
                     print(f"Warning: Error in callback at step {step}: {str(e)}")
-                    return None
 
         # Generate images
         for i in range(num_images):
             try:
-                final_image = pipeline(
+                # Clear intermediate images for each new generation
+                intermediate_images.clear()
+                
+                # Start the generation process
+                result = pipeline(
                     prompt=PROMPT,
                     negative_prompt=NPROMPT,
                     guidance_scale=guidance_scale,
@@ -117,8 +123,14 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                     mask_image=mask,
                     callback=callback,
                     callback_steps=5
-                ).images[0]
+                )
                 
+                # Yield intermediate results first
+                for img in intermediate_images:
+                    yield img
+                
+                # Finally, yield the completed image
+                final_image = result.images[0]
                 print(f"Successfully generated image {i+1}/{num_images}")
                 yield final_image
                 
