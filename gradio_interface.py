@@ -38,7 +38,12 @@ def create_gradio_interface(pipeline_with_lora):
                 
             # Right side column for output image
             with gr.Column():
-                output_image = gr.Image(label="Generated Image", elem_id="output_image")
+                output_image = gr.Gallery(
+                    label="Generated Images",
+                    elem_id="output_gallery",
+                    columns=3,
+                    preview=True
+                )
 
                 # Add a new slider for the number of images to generate
                 num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs", interactive=True)
@@ -49,7 +54,13 @@ def create_gradio_interface(pipeline_with_lora):
             # Button functionality
             generate_btn.click(
                 fn=lambda color, gs, steps, img, num_outputs: generate_image_with_lora(
-                    pipeline_with_lora, prompt=color, negative_prompt=NPROMPT, guidance_scale=gs, num_steps=steps, input_image=img
+                    pipeline_with_lora, 
+                    prompt=color, 
+                    negative_prompt=NPROMPT, 
+                    guidance_scale=gs, 
+                    num_steps=steps, 
+                    input_image=img,
+                    num_images=num_outputs
                 ),
                 inputs=[color_picker, guidance_scale, steps, input_image, num_outputs],
                 outputs=output_image

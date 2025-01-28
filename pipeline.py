@@ -9,42 +9,43 @@ import gradio as gr
 from config import PROMPT, NPROMPT
 
 # Function to generate an image using the model with LoRA
-def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image):
+def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image, num_images=1):
     try:
-        if not prompt.strip():
-            raise Exception("Please provide a prompt.")
-
-        print(f"Generating image with prompt: '{prompt}', negative prompt: '{negative_prompt}', guidance scale: {guidance_scale}, and steps: {num_steps}.")
+        print(f"Generating image:   guidance scale: {guidance_scale}, and steps: {num_steps}.")
 
 
        # Ensure the input image is in PIL format
-        if isinstance(input_image, np.ndarray):  # If input image is numpy array
+        if isinstance(input_image, np.ndarray): 
             input_image = Image.fromarray(input_image).convert("RGB")
-        elif isinstance(input_image, Image.Image):  # If input image is already PIL
+        elif isinstance(input_image, Image.Image): 
             input_image = input_image.convert("RGB")
         else:
             raise Exception("Invalid image format. Please provide a valid image.")
 
 
-        # Segment the input image using rembg and YOLO for face detection
+        # Segment the input image using rembg and YOLO for face detection for once
         mask = segment_and_refine_mask(input_image)
+        generated_images = []
 
-        with torch.no_grad():
-            # Generate the image using the mask created from segmentation and YOLO
-            image = pipeline(
-                prompt=PROMPT,
-                negative_prompt=NPROMPT,
-                guidance_scale=guidance_scale,
-                num_inference_steps=num_steps,
-                image=input_image,
-                mask_image=mask
-            ).images[0]
+        for _ in range(num_images):
+            with torch.no_grad():
+            #Pipeline
+                image = pipeline(
+                    prompt=PROMPT,
+                    negative_prompt=NPROMPT,
+                    guidance_scale=guidance_scale,
+                    num_inference_steps=num_steps,
+                    image=input_image,
+                    mask_image=mask
+                ).images[0]
+            generated_images.append(image)
+
 
         print("Image generated successfully.")
-        return image
+        return generated_images
 
     except Exception as e:
-        raise Exception(f"Error generating image: {e}")
+        raise Exception(f"Error generating images: {e}")
 
 # Load the model with LoRA
 pipeline_with_lora = load_model_with_lora()
