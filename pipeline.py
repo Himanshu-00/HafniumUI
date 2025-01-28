@@ -40,7 +40,7 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                 ).images[0]
                 
             # Yield the first image immediately for preview
-            if i == 0:
+            if _ == 0:
                 yield image
 
             generated_images.append(image)
