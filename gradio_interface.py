@@ -44,6 +44,7 @@ def create_gradio_interface(pipeline_with_lora):
                     columns=5,
                     preview=True,
                     object_fit="contain",
+                    height=600
                 )
 
                 with gr.Row():
