@@ -9,13 +9,13 @@ def create_gradio_interface(pipeline_with_lora):
         neutral_hue="indigo",
         radius_size="xxl"  # Extra large rounded corners
     )
-    with gr.Blocks(theme=theme, css=".gradio-container {max-width: 900px !important}") as HafniumUI: 
+    with gr.Blocks(theme=theme) as HafniumUI: 
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
         # Row with two columns
         with gr.Row():
             # Left side column with input_image, color selection, guidance_scale, and steps
-            with gr.Column():
+            with gr.Column(min_width=700):
                 input_image = gr.Image(label="Input Image", type="pil")  # Remove tool editor and set type to 'pil'
                 
                 # Add more color options for suit colors with Charcoal as the default
@@ -29,7 +29,7 @@ def create_gradio_interface(pipeline_with_lora):
                     label="Select Professional Suit Color",
                     value="Navy Blue (#000080)",  # Set default value to Charcoal
                     interactive=True
-                ).style(container=True, grid=(3,4,4,3))
+                )
                 
                 # Slider for guidance scale and steps
                 with gr.Row():
