@@ -130,7 +130,6 @@ Enforce mathematically proportional accessory ratios
 Gestural and Positional Refinements:
 
 Eliminate unnatural hand configurations
-Mandate organically relaxed, authentic hand placement
 Prevent artificially induced postural artifacts
 
 Facial Topography Requirements:
