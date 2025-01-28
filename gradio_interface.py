@@ -9,7 +9,7 @@ def create_gradio_interface(pipeline_with_lora):
         neutral_hue="indigo",
         radius_size="xxl"  # Extra large rounded corners
     )
-    with gr.Blocks(theme=theme) as HafniumUI: 
+    with gr.Blocks(theme=theme, css=".gradio-container {max-width: 900px !important}") as HafniumUI: 
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
 
         # Row with two columns
@@ -29,7 +29,7 @@ def create_gradio_interface(pipeline_with_lora):
                     label="Select Professional Suit Color",
                     value="Navy Blue (#000080)",  # Set default value to Charcoal
                     interactive=True
-                )
+                ).style(container=True, grid=(3,4,4,3))
                 
                 # Slider for guidance scale and steps
                 with gr.Row():
@@ -48,9 +48,9 @@ def create_gradio_interface(pipeline_with_lora):
 
                 # Add a new slider for the number of images to generate
                 num_outputs = gr.Slider(minimum=1, maximum=5, value=1, step=1, label="Number of Outputs", interactive=True)
-
-            # Action for button click
-            generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
+                # Action for button click
+                generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
+            
             
             # Button functionality
             generate_btn.click(
