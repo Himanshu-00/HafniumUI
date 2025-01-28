@@ -131,6 +131,7 @@ Gestural and Positional Refinements:
 
 Eliminate unnatural hand configurations
 Prevent artificially induced postural artifacts
+NO Hands at all.
 
 Facial Topography Requirements:
 
