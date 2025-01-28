@@ -37,14 +37,13 @@ def create_gradio_interface(pipeline_with_lora):
                     steps = gr.Slider(minimum=1, maximum=100, value=30, step=1, label="Number of Steps", interactive=True)
                 
             # Right side column for output image
-            with gr.Column(min_width=1000):
+            with gr.Column(min_width=800):
                 output_image = gr.Gallery(
                     label="Generated Images",
                     elem_id="output_gallery",
                     columns=5,
                     preview=True,
                     object_fit="contain",
-                    height=600
                 )
 
                 with gr.Row():
