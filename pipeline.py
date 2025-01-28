@@ -57,6 +57,7 @@
 # # Load the model with LoRA
 # pipeline_with_lora = load_model_with_lora()
 
+# pipeline.py
 import os
 import torch
 from PIL import Image
@@ -69,16 +70,27 @@ def validate_and_convert_image(input_image):
     """Validate and convert input image to RGB PIL Image format."""
     if input_image is None:
         raise ValueError("No image provided. Please upload an image.")
-        
+    
     try:
+        # Handle different input types
+        if isinstance(input_image, (str, bytes)):
+            raise ValueError("Invalid image format. Please provide an image file.")
+        
         if isinstance(input_image, np.ndarray):
-            return Image.fromarray(input_image).convert("RGB")
-        elif isinstance(input_image, Image.Image):
+            # Convert numpy array to PIL Image
+            return Image.fromarray(np.uint8(input_image)).convert("RGB")
+        
+        if isinstance(input_image, Image.Image):
+            # Ensure the image is in RGB mode
             return input_image.convert("RGB")
-        else:
-            raise ValueError(f"Unsupported image type: {type(input_image)}")
+        
+        # If we get here, the input type is not supported
+        raise ValueError(f"Unsupported image type: {type(input_image)}. Please provide a valid image file.")
+        
     except Exception as e:
-        raise ValueError(f"Error converting image: {str(e)}")
+        if isinstance(e, ValueError):
+            raise e
+        raise ValueError(f"Error processing image: {str(e)}")
 
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image, num_images=1):
     """Generate images using the pipeline with LoRA and stream intermediate results."""
@@ -94,42 +106,42 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         except Exception as e:
             raise ValueError(f"Error in mask generation: {str(e)}")
 
-        # Create a list to store intermediate results
+        # Store intermediate results
         intermediate_images = []
-
+        
         # Define callback for intermediate results
         def callback(step, timestep, latents):
-            with torch.no_grad():
-                try:
+            try:
+                with torch.no_grad():
                     image = pipeline.decode_latents(latents)
                     image = pipeline.numpy_to_pil(image)[0]
                     intermediate_images.append(image)
-                except Exception as e:
-                    print(f"Warning: Error in callback at step {step}: {str(e)}")
+            except Exception as e:
+                print(f"Warning: Error in callback at step {step}: {str(e)}")
 
         # Generate images
         for i in range(num_images):
             try:
-                # Clear intermediate images for each new generation
+                # Clear previous intermediate results
                 intermediate_images.clear()
                 
-                # Start the generation process
+                # Generate the image
                 result = pipeline(
-                    prompt=PROMPT,
-                    negative_prompt=NPROMPT,
-                    guidance_scale=guidance_scale,
-                    num_inference_steps=num_steps,
+                    prompt=prompt,  # Use the provided prompt
+                    negative_prompt=negative_prompt,
+                    guidance_scale=float(guidance_scale),  # Ensure float
+                    num_inference_steps=int(num_steps),    # Ensure int
                     image=processed_image,
                     mask_image=mask,
                     callback=callback,
                     callback_steps=5
                 )
                 
-                # Yield intermediate results first
+                # Yield intermediate results
                 for img in intermediate_images:
                     yield img
                 
-                # Finally, yield the completed image
+                # Yield final result
                 final_image = result.images[0]
                 print(f"Successfully generated image {i+1}/{num_images}")
                 yield final_image
@@ -141,6 +153,7 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         if isinstance(e, ValueError):
             raise e
         raise Exception(f"Unexpected error in image generation pipeline: {str(e)}")
-
+    
+    
 # Initialize the pipeline
 pipeline_with_lora = load_model_with_lora()

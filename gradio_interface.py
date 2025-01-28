@@ -72,6 +72,7 @@
 # gradio_interface.py
 import gradio as gr
 from pipeline import generate_image_with_lora
+from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
     theme = gr.themes.Soft(
@@ -94,14 +95,27 @@ def create_gradio_interface(pipeline_with_lora):
             # Left Panel - Inputs
             with gr.Column(scale=1, min_width=300):
                 gr.Markdown("## ⚙️ Configuration")
-                input_image = gr.Image(label="Upload Reference Photo", type="pil", height=250)
+                input_image = gr.Image(
+                    label="Upload Reference Photo",
+                    type="pil",
+                    height=250,
+                    tool=None  # Disable editing tools
+                )
                 
                 color_picker = gr.Radio(
                     choices=[
-                        "Charcoal (#3b3b3b)", "Black (#000000)", "Navy Blue (#000080)", 
-                        "Gray (#808080)", "White (#FFFFFF)", "Dark Brown (#654321)", 
-                        "Burgundy (#800020)", "Dark Green (#006400)", "Beige (#F5F5DC)", 
-                        "Light Gray (#D3D3D3)", "Olive Green (#808000)", "Royal Blue (#4169E1)"
+                        "Navy Blue (#000080)",
+                        "Charcoal (#3b3b3b)",
+                        "Black (#000000)",
+                        "Gray (#808080)",
+                        "White (#FFFFFF)",
+                        "Dark Brown (#654321)",
+                        "Burgundy (#800020)",
+                        "Dark Green (#006400)",
+                        "Beige (#F5F5DC)",
+                        "Light Gray (#D3D3D3)",
+                        "Olive Green (#808000)",
+                        "Royal Blue (#4169E1)"
                     ],
                     label="Suit Color Selection",
                     value="Navy Blue (#000080)",
@@ -110,17 +124,26 @@ def create_gradio_interface(pipeline_with_lora):
                 
                 with gr.Group():
                     num_outputs = gr.Slider(
-                        minimum=1, maximum=5, value=1, step=1,
+                        minimum=1,
+                        maximum=5,
+                        value=1,
+                        step=1,
                         label="Number of Variations",
                         interactive=True
                     )
                     guidance_scale = gr.Slider(
-                        minimum=1, maximum=20, value=7.5, step=0.5,
-                        label="Creativity Control (Guidance Scale)",
+                        minimum=1,
+                        maximum=20,
+                        value=7.5,
+                        step=0.5,
+                        label="Creativity Control",
                         interactive=True
                     )
                     steps = gr.Slider(
-                        minimum=10, maximum=100, value=30, step=5,
+                        minimum=10,
+                        maximum=100,
+                        value=30,
+                        step=5,
                         label="Generation Steps",
                         interactive=True
                     )
@@ -128,35 +151,47 @@ def create_gradio_interface(pipeline_with_lora):
                 generate_btn = gr.Button(
                     "✨ Generate Variations",
                     variant="primary",
-                    size="lg",
-                    min_width=200
+                    size="lg"
                 )
 
             # Right Panel - Output
             with gr.Column(scale=2, min_width=600):
-                gr.Markdown("## 🎉 Real-Time Generation")
                 output_image = gr.Image(
-                    label="Live Image Generation",
-                    height=600,
-                    streaming=True  # Enable streaming updates
+                    label="Generated Image",
+                    height=600
                 )
-        
-        # Generation logic with streaming
-        def wrapped_generator(*args):
-            for result in generate_image_with_lora(pipeline_with_lora, *args):
-                yield result  # Stream intermediate images
 
+        # Wrapper function to handle the pipeline call
+        def wrapped_generate(*args):
+            try:
+                color, gs, steps, img, num = args
+                if img is None:
+                    raise ValueError("Please upload an image first")
+                    
+                for result in generate_image_with_lora(
+                    pipeline=pipeline_with_lora,
+                    prompt=color,
+                    negative_prompt=NPROMPT,
+                    guidance_scale=gs,
+                    num_steps=steps,
+                    input_image=img,
+                    num_images=num
+                ):
+                    yield result
+            except Exception as e:
+                raise gr.Error(str(e))
+
+        # Connect the button click event
         generate_btn.click(
-            fn=wrapped_generator,
+            fn=wrapped_generate,
             inputs=[color_picker, guidance_scale, steps, input_image, num_outputs],
             outputs=output_image,
             api_name="generate"
         )
 
-        # UI Enhancements
         gr.Markdown("""
-        <div style="text-align: center; padding: 20px; margin-top: 20px; border-radius: 8px; background: var(--block-background-fill);">
-            <small>💡 Tip: For best results, use well-lit portrait photos with clear visibility of upper body</small>
+        <div style="text-align: center; padding: 20px; margin-top: 20px;">
+            <small>💡 Tip: Use well-lit portrait photos with clear visibility of upper body</small>
         </div>
         """)
 
