@@ -42,7 +42,8 @@ def create_gradio_interface(pipeline_with_lora):
                     label="Generated Images",
                     elem_id="output_gallery",
                     columns=3,
-                    preview=True
+                    preview=True,
+                    object_fit="contain"
                 )
 
                 # Add a new slider for the number of images to generate
