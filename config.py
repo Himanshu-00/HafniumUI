@@ -66,42 +66,78 @@ PROMPT4 = """
 
 NPROMPT = """
 
-Anatomical Prohibition Suite:
-"UNREALISTIC HUMAN FORM REJECTION: Severely deformed hands, mutated digits, fused limbs, scoliosis/kyphosis spinal deviations, asymmetrical hemibody proportions, biomechanical joint violations (hyperextended elbows/knees), phantom limbs, limb duplication artifacts, uncanny valley morphogenesis, congenital anomaly patterns (amelia/phocomelia), post-traumatic disfigurement simulations, cervical-thoracic misalignment, pelvic tilt distortions, limb-length discrepancies >2% biomechanical tolerance, non-Euclidean skeletal topology, fractal-based anatomical recursion"
+Body Proportion Anomaly Rejection:
 
-Photorealistic Enforcement Protocol:
+Absolute prohibition of unnatural body proportions
+Eliminate symmetry disruptions or anatomical inconsistencies
+Reject any non-standard limb-to-torso ratios
+Prevent skeletal structure distortions
 
-Strict 8K UHD fidelity mandate: Reject Rayleigh scattering artifacts, chromatic aberration, moiré patterns, JPEG quantization noise
 
-Absolute prohibition: Neural rendering artifacts, GAN finger mutations, diffusion model watermarks, latent space interpolation glitches
+Zero tolerance for:
 
-Skin topology requirements: Subsurface scattering compliance, pore-level microtexture accuracy, hemoglobin-chromophore distribution authenticity
+Disproportionate shoulder widths
+Unnaturally elongated or compressed limbs
+Irregular torso-to-leg length relationships
+Unnatural neck-to-shoulder connections
+Biomechanically impossible joint alignments
 
-Biomechanical Constraints:
-"BANISHED: Improper scapulohumeral rhythm, non-orthopedic gait kinematics, patellar maltracking simulations, unphysiological lumbar lordosis, sternoclavicular dislocation patterns, temporomandibular joint dysmorphia, carpal tunnel compression geometries, iliotibial band tension anomalies, achilles tendon insertion point deviations >1.5mm"
+Visual Composition Constraints:
 
-Professional Presentation Parameters:
+Absolute prohibition of distracting, complex backgrounds
+Total elimination of visual noise and textural complexity
+Mandate pristine, monochromatic studio environment
+Enforce minimalist neutral backdrop
 
-Full-spectrum anti-deformation matrix: Prevent trapezius overbulking, deltoid flattening, intercostal space distortion
+Technical Image Specifications:
 
-Necktie physics enforcement: Windsor knot structural integrity, silk-drape fluid dynamics, anti-gravity defiance validation
+Complete rejection of low-resolution, pixelated imagery
+Stringent ultra-high-definition clarity requirements
+Prevent digital manipulation artifacts
+Enforce naturalistic photographic reproduction
 
-Fabric simulation safeguards: Prevent cloth clipping, unrealistic wrinkle propagation, non-PBR material responses
+Subject Presentation Parameters:
 
-Optical Perfection Standards:
+Suppress exaggerated facial dynamics
+Prohibit theatrical makeup and artificial contouring
+Mandate organic skin texture and neutral professional appearance
 
-Prime lens emulation: Prohibit focal length <85mm, barrel/pincushion distortion >0.5%, spherical aberration
+Wardrobe and Styling Directives:
 
-Photon-level lighting control: Reject caustic patterns, non-uniform lux distribution, CRI <98 light sources
+Zero acceptance of informal or inappropriate attire
+Complete exclusion of branded elements
+Mandate precision-tailored professional vestments
 
-Retinal biology compliance: Perfect vergence-accommodation conflict resolution, natural scleral vascular patterning
+Illumination and Exposure Guidelines:
 
-Enhanced Negative Prompt Syntax:
-"(Deformed iris morphology:1.5), (aberrant dermatoglyphics:1.3), (improper nail bed integration:1.4), (non-Fibonacci spiral ear geometry:1.6), (non-Newtonian synovial fluid representation:1.2), (discontinuous suprasternal notch alignment:1.7), (improper philtrum-columnellar relationship:1.5), (incorrect helical rim light reflection:1.3), (violated golden ratio facial thirds:1.8), (non-anatomical clavicular curvature:1.6)"
+Reject non-uniform or harsh lighting configurations
+Prevent shadow artifacts and lens aberrations
+Mandate soft, balanced, naturalistic light distribution
 
-Anti-Deformity Reinforcement:
-"EMERGENCY PROTOCOL: Full-body CT scan verification overlay - Immediate rejection of outputs failing DEXA-simulated bone density maps, MRI-validated soft tissue alignment, or violating Visible Human Project cross-sectional atlases"
+Anatomical Alignment Specifications:
 
+Prohibit perspective-induced bodily distortions
+Enforce mathematically accurate human proportionality
+Mandate symmetrical, frontally-centered positioning
+Ensure exact replication of natural human biomechanics
+
+Professional Accessory Protocols:
+
+Exclusive acceptance of conservative neckwear
+Specify matte-finish ties in precise color ranges
+Enforce mathematically proportional accessory ratios
+
+Gestural and Positional Refinements:
+
+Eliminate unnatural hand configurations
+Mandate organically relaxed, authentic hand placement
+Prevent artificially induced postural artifacts
+
+Facial Topography Requirements:
+
+Enforce direct, centered facial orientation
+Mandate neutral, professional emotional presentation
+Ensure precise eye alignment and authentic dermatological texture""
 
 "No distracting visual elements or cluttered backgrounds with complex patterns, busy textures, or elements that draw attention away from the subject."
 "No low-resolution, pixelated, blurry, or out-of-focus images; the image must maintain sharp, high-definition details."
