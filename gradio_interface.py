@@ -72,7 +72,6 @@
 # gradio_interface.py
 import gradio as gr
 from pipeline import generate_image_with_lora
-from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
     theme = gr.themes.Soft(
