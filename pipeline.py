@@ -28,21 +28,30 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         generated_images = []
 
         for _ in range(num_images):
-            with torch.no_grad():
-            #Pipeline
-                image = pipeline(
-                    prompt=PROMPT,
-                    negative_prompt=NPROMPT,
-                    guidance_scale=guidance_scale,
-                    num_inference_steps=num_steps,
-                    image=input_image,
-                    mask_image=mask
-                ).images[0]
-            generated_images.append(image)
+        # Use a callback to capture intermediate results
+            def callback(step, timestep, latents):
+                with torch.no_grad():
+                    # Decode the latents to an image
+                    image = pipeline.decode_latents(latents)
+                    image = pipeline.numpy_to_pil(image)[0]
+                    yield image  # Stream intermediate result
+                    
+                
 
 
-        print("Image generated successfully.")
-        return generated_images
+            # Generate the image using the pipeline
+            final_image = pipeline(
+                prompt=PROMPT,
+                negative_prompt=NPROMPT,
+                guidance_scale=guidance_scale,
+                num_inference_steps=num_steps,
+                image=input_image,
+                mask_image=mask,
+                callback=callback,  # Pass the callback for streaming
+                callback_steps=5  # Yield an image every 5 steps
+            ).images[0]
+            print("Image Generated Successfully:")
+            yield final_image  # Yield the final image
 
     except Exception as e:
         raise Exception(f"Error generating images: {e}")
