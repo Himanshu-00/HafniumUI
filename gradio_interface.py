@@ -56,14 +56,7 @@ def create_gradio_interface(pipeline_with_lora):
                     num_outputs = gr.Slider(minimum=1, maximum=20, value=1, step=1, label="Number of Outputs", interactive=True)
                     # Action for button click
                     generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
-                    clear_btn = gr.Button("Clear Gallery")
-                
-                
-                
-                def clear_gallery_and_generate(state):
-                    # Clear the gallery (reset the state) before generating new images
-                    state = []
-                    return state
+                  
             
             # Button functionality
             generate_btn.click(
@@ -71,13 +64,6 @@ def create_gradio_interface(pipeline_with_lora):
                 inputs=[color_picker, guidance_scale, steps, input_image, num_outputs, state],
                 outputs=output_image,
                 show_progress=True
-            )
-
-            # Clear gallery functionality added to the generate button
-            generate_btn.click(
-                fn=clear_gallery_and_generate,
-                inputs=[state],
-                outputs=output_image
             )
 
     return HafniumUI
