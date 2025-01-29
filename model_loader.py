@@ -1,7 +1,7 @@
 import os
 import torch
 import requests
-from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler  # Assuming you're using DiffusionPipeline from diffusers library
+from diffusers import DiffusionPipeline  # Assuming you're using DiffusionPipeline from diffusers library
 from safetensors.torch import load_file
 import config
 
@@ -44,15 +44,6 @@ def load_model_with_lora():
         model_path,
         torch_dtype=torch.float16
     )
-
-    # Configure DPM++ Scheduler with recommended settings
-    pipeline.scheduler = DPMSolverMultistepScheduler.from_config(
-        pipeline.scheduler.config,
-        algorithm_type="sde-dpmsolver++",  # Use SDE variant for better quality
-        use_karras_sigmas=True,            # Enable Karras noise schedule
-        lambda_min_clipped=-float("inf"),  # Better for inpainting tasks
-        variance_type="learned_range"      # Match SDXL training
-    )
     print("Model loaded successfully.")
 
 
@@ -90,7 +81,7 @@ def load_model_with_lora():
                 add_lora_to_layer(layer_name, module, lora_state_dict)
                 updated_layers += 1
 
-        print(f"DPM++ Scheduler configured, {updated_layers} LoRA layers updated")
+        print(f"Total LoRA layers updated: {updated_layers}")
         pipeline.to(device)
         print("Model and LoRA weights successfully loaded and moved to device.")
         return pipeline

@@ -53,7 +53,7 @@ def generate_images(color, gs, steps, img, num_outputs, progress=gr.Progress(tra
             pipeline_with_lora,
             guidance_scale=gs,
             num_steps=steps,
-            input_image=img,
+            input_image=img
         )
         
         current_images.append((new_image, f"Generated Image {i+1}/{num_outputs}"))
