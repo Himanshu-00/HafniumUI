@@ -113,14 +113,14 @@ def preview_callback(pipe, step_index, timestep, callback_kwargs):
     with torch.no_grad():
         # Convert latents to image
         latents_copy = 1 / 0.18215 * latents
-        image = pipeline.vae.decode(latents_copy).sample
+        image = pipe.vae.decode(latents_copy).sample  # Use 'pipe' here, not 'pipeline'
         image = (image / 2 + 0.5).clamp(0, 1)
         image = image.cpu().permute(0, 2, 3, 1).float().numpy()
         image = (image[0] * 255).astype(np.uint8)
         callback_data["current_image"] = Image.fromarray(image)
+    
+    return callback_kwargs  # Must return modified callback_kwargs
 
-    # Return updated callback_kwargs
-    return callback_kwargs
 
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image, progress=gr.Progress()):
     try:
