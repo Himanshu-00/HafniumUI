@@ -141,11 +141,11 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
 
                 print(f"[Console Log] Step {step}/{num_steps} - Intermediate image updated")
 
-                # **3️⃣ Yield Intermediate Image to Gradio UI**
+                # **Yield Intermediate Image**
                 yield [(intermediate_image, f"Step {step}/{num_steps}")]
 
         # **4️⃣ Set Up Random Generator**
-        generator = torch.Generator(device=pipeline.device).manual_seed(42)
+        generator = torch.Generator(device=pipeline.device)
 
         # **5️⃣ Run the Pipeline with `callback_on_step_end`**
         result = pipeline(
