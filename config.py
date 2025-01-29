@@ -24,9 +24,9 @@ else:
 
 PROMPT = """
 
-A photorealistic portrait of a 23-year-old male model from Canada, exuding professionalism in a tailored navy suit and matching tie.
-He stands confidently against a sleek, light gray backdrop inside a modern photo studio, illuminated by soft, diffused lighting that enhances the suit's texture and fit. 
-The image is captured in a medium shot, 8K HDR, showcasing the refined elegance of his attire.(Tie is must or mandatory)
+A photorealistic portrait of a 23-year-old male model from Canada in a tailored navy suit with a matching tie
+He stands confidently against a light gray studio backdrop, illuminated by soft, diffused lighting that highlights the suit's texture and fit. 
+The image is captured in a medium shot, 8K HDR, showcasing the refined elegance of his attire.
 
 """
 
