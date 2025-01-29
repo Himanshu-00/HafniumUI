@@ -1,7 +1,7 @@
 import os
 import torch
 import requests
-from diffusers import DiffusionPipeline  # Assuming you're using DiffusionPipeline from diffusers library
+from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler  # Assuming you're using DiffusionPipeline from diffusers library
 from safetensors.torch import load_file
 import config
 
@@ -42,14 +42,19 @@ def load_model_with_lora():
     print("Loading the Diffusion model...")
     pipeline = DiffusionPipeline.from_pretrained(
         model_path,
-        torch_dtype=torch.float16
+        torch_dtype=torch.float16,
+        use_safetensors=True,
+        safety_checker=None,
+        requires_safety_checker=False
     )
+    # Set DPM++ 2M Karras scheduler
+    pipeline.scheduler = DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
+    pipeline.scheduler.config.use_karras_sigmas = True  # Enable Karras noise schedule
     print("Model loaded successfully.")
-
 
     try:
        
-        # Call the download function here
+       # Call the download function here
         download_lora_model(lora_download_url, lora_path)
 
         print("Loading LoRA weights from:", lora_path)
@@ -84,6 +89,13 @@ def load_model_with_lora():
         print(f"Total LoRA layers updated: {updated_layers}")
         pipeline.to(device)
         print("Model and LoRA weights successfully loaded and moved to device.")
+
+        # Memory optimizations
+        pipeline.enable_model_cpu_offload()
+        pipeline.enable_xformers_memory_efficient_attention()
+        pipeline.enable_attention_slicing()
+
+        print(f"Model moved to {device} with memory optimizations")
         return pipeline
 
     except Exception as e:
