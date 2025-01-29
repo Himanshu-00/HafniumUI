@@ -52,8 +52,6 @@ def generate_images(color, gs, steps, img, num_outputs, current_state):
         # Generate new image
         new_image = generate_image_with_lora(
         pipeline_with_lora,
-        prompt=color,
-        negative_prompt=NPROMPT,
         guidance_scale=gs,
         num_steps=steps,
         input_image=img
