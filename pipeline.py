@@ -24,15 +24,6 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image, p
 
         # Generate mask once and reuse for all generations
         mask = segment_and_refine_mask(input_image)
-        mask = mask.convert("L")  # Force single channel
-        
-        # Convert to tensors
-        image_tensor = torch.from_numpy(np.array(input_image)).permute(2, 0, 1).float() / 255.0
-        mask_tensor = torch.from_numpy(np.array(mask)).unsqueeze(0).float() / 255.0
-
-        # Debug shapes
-        print(f"Image tensor shape: {image_tensor.shape}")  # Should be [3, H, W]
-        print(f"Mask tensor shape: {mask_tensor.shape}")    # Should be [1, H, W]
 
         with torch.no_grad():
             image = pipeline(
@@ -40,8 +31,8 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image, p
                 negative_prompt=NPROMPT, 
                 guidance_scale=guidance_scale,
                 num_inference_steps=num_steps,
-                image=image_tensor.unsqueeze(0).to(pipeline.device),
-                mask_image=mask_tensor.unsqueeze(0).to(pipeline.device),
+                image=input_image,
+                mask_image=mask
             ).images[0]
             
         print(f"Successfully generated images.")    

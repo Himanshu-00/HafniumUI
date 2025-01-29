@@ -1,7 +1,7 @@
 import os
 import torch
 import requests
-from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler  # Assuming you're using DiffusionPipeline from diffusers library
+from diffusers import DiffusionPipeline  # Assuming you're using DiffusionPipeline from diffusers library
 from safetensors.torch import load_file
 import config
 
@@ -42,31 +42,14 @@ def load_model_with_lora():
     print("Loading the Diffusion model...")
     pipeline = DiffusionPipeline.from_pretrained(
         model_path,
-        torch_dtype=torch.float16,
-        use_safetensors=True,
-        safety_checker=None,
-        requires_safety_checker=False
+        torch_dtype=torch.float16
     )
-
-     # Set DPM++ 2M SDE scheduler
-    pipeline.scheduler = DPMSolverMultistepScheduler.from_config(
-        pipeline.scheduler.config,
-        algorithm_type="sde-dpmsolver++",  # Critical for inpainting quality
-        use_karras_sigmas=True,
-        lambda_min_clipped=-float("inf"),  # Better mask handling
-        variance_type="learned_range"  # Match SDXL training
-    )
-
-     # Force input channels compatibility
-    pipeline.unet.config.in_channels = 4  # 3 for image + 1 for mask
-    pipeline.vae.config.latent_channels = 4
-    
-    print("Model loaded successfully with DPM++ 2M SDE scheduler.")
     print("Model loaded successfully.")
+
 
     try:
        
-       # Call the download function here
+        # Call the download function here
         download_lora_model(lora_download_url, lora_path)
 
         print("Loading LoRA weights from:", lora_path)
@@ -101,9 +84,6 @@ def load_model_with_lora():
         print(f"Total LoRA layers updated: {updated_layers}")
         pipeline.to(device)
         print("Model and LoRA weights successfully loaded and moved to device.")
-
-
-        print(f"Model moved to {device} with memory optimizations")
         return pipeline
 
     except Exception as e:
