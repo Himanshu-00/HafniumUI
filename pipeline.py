@@ -108,23 +108,9 @@ import gradio as gr
 from config import PROMPT, NPROMPT
 from diffusers import DiffusionPipeline
 
-def preview_callback(pipe, step_index, timestep, callback_kwargs):
-    latents = callback_kwargs["latents"]  # Get latents from callback_kwargs
-    with torch.no_grad():
-        # Convert latents to image
-        latents_copy = 1 / 0.18215 * latents
-        image = pipe.vae.decode(latents_copy).sample  # Use 'pipe' here, not 'pipeline'
-        image = (image / 2 + 0.5).clamp(0, 1)
-        image = image.cpu().permute(0, 2, 3, 1).float().numpy()
-        image = (image[0] * 255).astype(np.uint8)
-        callback_data["current_image"] = Image.fromarray(image)
-    
-    return callback_kwargs  # Must return modified callback_kwargs
-
-
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image, progress=gr.Progress()):
+    """Generate an image with live step updates using callback_on_step_end."""
     try:
-        # Prepare the image
         if isinstance(input_image, np.ndarray):
             input_image = Image.fromarray(input_image).convert("RGB")
         elif isinstance(input_image, Image.Image):
@@ -135,7 +121,23 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         mask = segment_and_refine_mask(input_image)
         yield [(input_image, "Starting generation...")]
 
+        # Initialize callback_data to hold the current image
         callback_data = {"current_image": None}
+
+        # Fixed callback signature with proper arguments
+        def preview_callback(pipe, step_index, timestep, callback_kwargs):
+            latents = callback_kwargs["latents"]  # Get latents from callback_kwargs
+            with torch.no_grad():
+                # Convert latents to image
+                latents_copy = 1 / 0.18215 * latents
+                image = pipe.vae.decode(latents_copy).sample  # Use 'pipe' here, not 'pipeline'
+                image = (image / 2 + 0.5).clamp(0, 1)
+                image = image.cpu().permute(0, 2, 3, 1).float().numpy()
+                image = (image[0] * 255).astype(np.uint8)
+                callback_data["current_image"] = Image.fromarray(image)
+            
+            return callback_kwargs  # Must return modified callback_kwargs
+        
 
         result = pipeline(
             prompt=prompt,
@@ -146,15 +148,15 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
             guidance_scale=guidance_scale,
             generator=torch.Generator(device=pipeline.device),
             callback_on_step_end=preview_callback,
-            callback_on_step_end_tensor_inputs=["latents"]
+            callback_on_step_end_tensor_inputs=["latents"]  # Correct tensor inputs
         )
 
-        # Yield intermediate images to update progress
+        # Yield intermediate images
         for step in range(num_steps):
-            progress(step / num_steps, f"Step {step + 1}/{num_steps}")
+            progress(step / num_steps, desc=f"Step {step + 1}/{num_steps}")
             if callback_data["current_image"]:
                 yield [(callback_data["current_image"], f"Step {step + 1}/{num_steps}")]
-
+        
         yield [(result.images[0], "Final Result")]
 
     except Exception as e:
