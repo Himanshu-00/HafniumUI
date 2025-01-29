@@ -124,7 +124,7 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         yield [(input_image, "Starting generation...")]
 
         # **2️⃣ Set Up Callback for Live Updates**
-        def preview_callback(step: int, timestep: int, latents: torch.FloatTensor, **kwargs):
+        def preview_callback(step: int, timestep: int, latents: torch.FloatTensor, extra_data=None):
             print(f"[Callback] Step: {step}, Timestep: {timestep}")
 
             # Convert latents to an intermediate image
@@ -139,6 +139,7 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
 
                 # **Yield Intermediate Image**
                 yield [(intermediate_image, f"Step {step}")]
+
 
 
 
