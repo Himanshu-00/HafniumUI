@@ -9,3 +9,4 @@ numpy
 rembg
 onnxruntime
 transformers
+tqdm
