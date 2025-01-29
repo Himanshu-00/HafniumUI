@@ -109,7 +109,7 @@ from config import PROMPT, NPROMPT
 from diffusers import DiffusionPipeline
 
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image, progress=gr.Progress()):
-    """Generate a single image with live updates, ensuring correct intermediate steps."""
+    """Generate an image with live step updates using callback_on_step_end."""
     try:
         if isinstance(input_image, np.ndarray):
             input_image = Image.fromarray(input_image).convert("RGB")
@@ -123,8 +123,8 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         # **1️⃣ Yield Input Image Immediately**
         yield [(input_image, "Starting generation...")]
 
-        # **2️⃣ Ensure the Callback Works Properly**
-        def preview_callback(step: int, timestep: int, latents: torch.FloatTensor):
+        # **2️⃣ Set Up Callback for Live Updates**
+        def preview_callback(step: int, timestep: int, latents: torch.FloatTensor, **kwargs):
             """Updates UI with intermediate images at each step."""
             progress_percentage = (step / num_steps) * 100
             progress(step / num_steps, desc=f"Step {step}/{num_steps} ({progress_percentage:.1f}%)")
@@ -144,10 +144,10 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                 # **3️⃣ Yield Intermediate Image to Gradio UI**
                 yield [(intermediate_image, f"Step {step}/{num_steps}")]
 
-        # **4️⃣ Set a Generator to Ensure Consistency**
+        # **4️⃣ Set Up Random Generator**
         generator = torch.Generator(device=pipeline.device).manual_seed(42)
 
-        # **5️⃣ Run the Pipeline with the Callback**
+        # **5️⃣ Run the Pipeline with `callback_on_step_end`**
         result = pipeline(
             prompt=prompt,
             image=input_image,
@@ -156,8 +156,7 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
             num_inference_steps=num_steps,
             guidance_scale=guidance_scale,
             generator=generator,
-            callback=preview_callback,
-            callback_steps=1  # Update at every step
+            callback_on_step_end=preview_callback  # 🔥 Correct way to do step updates
         )
 
         # **6️⃣ Ensure Final Image is Displayed**
@@ -166,7 +165,6 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
     except Exception as e:
         print(f"[Error] {str(e)}")
         raise ValueError(f"Error generating image: {e}")
-
 
 # Load the model with LoRA
 pipeline_with_lora = load_model_with_lora()
