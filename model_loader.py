@@ -92,8 +92,13 @@ def load_model_with_lora():
 
         # Memory optimizations
         pipeline.enable_model_cpu_offload()
-        pipeline.enable_xformers_memory_efficient_attention()
         pipeline.enable_attention_slicing()
+
+         # Alternative to xformers
+        if not hasattr(pipeline, 'enable_xformers_memory_efficient_attention'):
+            print("Using PyTorch's native scaled dot-product attention")
+            torch.backends.cuda.enable_flash_sdp(True)
+            torch.backends.cuda.enable_mem_efficient_sdp(True)
 
         print(f"Model moved to {device} with memory optimizations")
         return pipeline
