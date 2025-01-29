@@ -43,6 +43,14 @@ def segment_and_refine_mask(image):
     yolo_results = yolo_model(image)  # Perform face detection with YOLO
     refined_mask = refine_mask_with_bounding_box(image, mask, yolo_results)
 
+    # Ensure single channel output
+    if mask.mode != 'L':
+        mask = mask.convert('L')  # Convert to grayscale
+    
+    # Convert to binary mask (0s and 1s)
+    mask_array = np.array(mask) > 0
+    refined_mask = Image.fromarray(mask_array.astype(np.uint8) * 255)
+
     return refined_mask
 
 def refine_mask_with_bounding_box(image, mask, yolo_results):
