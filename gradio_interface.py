@@ -215,8 +215,8 @@ def create_gradio_interface(pipeline_with_lora):
                 
                 def generate_images(color, gs, steps, img, num_outputs, progress=gr.Progress(track_tqdm=True)):
                     for i in range(num_outputs):
-                        print(f"[Console Log] Generating image {i+1}/{num_outputs} with color: {color}")
-                        progress(i / num_outputs, f"Generating image {i+1}/{num_outputs}")
+                        print(f"[Console Log] Generating image {i + 1}/{num_outputs} with color: {color}")
+                        progress(i / num_outputs, f"Generating image {i + 1}/{num_outputs}")
 
                         # Stream the generation process
                         generator = generate_image_with_lora(
@@ -228,13 +228,12 @@ def create_gradio_interface(pipeline_with_lora):
                             input_image=img
                         )
 
-                        # **🔹 Yield Each Step Properly**
+                        # Yield Each Step Properly
                         for step_result in generator:
                             yield step_result
-                        
-                        # **🔹 Ensure Progress is Reset for Next Image**
-                        progress(1.0, "Generation complete")
 
+                        # Ensure Progress is Reset for Next Image
+                        progress(1.0, "Generation complete")
 
                 
                 def clear_gallery():
