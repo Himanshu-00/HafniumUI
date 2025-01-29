@@ -125,11 +125,9 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
 
         # **2️⃣ Set Up Callback for Live Updates**
         def preview_callback(step: int, timestep: int, latents: torch.FloatTensor, **kwargs):
-            """Updates UI with intermediate images at each step."""
-            progress_percentage = (step / num_steps) * 100
-            progress(step / num_steps, desc=f"Step {step}/{num_steps} ({progress_percentage:.1f}%)")
+            print(f"[Callback] Step: {step}, Timestep: {timestep}")
 
-            # Convert latents to image correctly
+            # Convert latents to an intermediate image
             with torch.no_grad():
                 latents_copy = latents.clone().detach()
                 latents_copy = 1 / 0.18215 * latents_copy
@@ -139,10 +137,10 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                 image_np = (image_np * 255).round().astype("uint8")
                 intermediate_image = Image.fromarray(image_np[0])
 
-                print(f"[Console Log] Step {step}/{num_steps} - Intermediate image updated")
-
                 # **Yield Intermediate Image**
-                yield [(intermediate_image, f"Step {step}/{num_steps}")]
+                yield [(intermediate_image, f"Step {step}")]
+
+
 
         # **4️⃣ Set Up Random Generator**
         generator = torch.Generator(device=pipeline.device)
