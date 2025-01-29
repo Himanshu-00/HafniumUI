@@ -123,8 +123,8 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         def preview_callback(step: int, timestep: int, latents: torch.FloatTensor):
             # Calculate progress
             progress_percentage = (step / num_steps) * 100
-            progress(step/num_steps, desc=f"Step {step}/{num_steps} ({progress_percentage:.1f}%)")
-            
+            progress(step / num_steps, desc=f"Step {step}/{num_steps} ({progress_percentage:.1f}%)")
+
             # Convert latents to image
             with torch.no_grad():
                 latents_copy = latents.detach().clone()
@@ -134,11 +134,14 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                 image = image.detach().cpu().permute(0, 2, 3, 1).numpy()
                 image = (image * 255).round().astype("uint8")
                 current_image = Image.fromarray(image[0])
+                
+                print(f"[Console Log] Step {step}/{num_steps} - Image Updated")
+                
                 # Yield the current state for streaming
                 yield [(current_image, f"Step {step}/{num_steps}")]
 
         # Run the pipeline with streaming callback
-        generator = torch.Generator(device=pipeline.device).manual_seed(42)
+        generator = torch.Generator(device=pipeline.device)
         
         # Initial empty state
         yield [(Image.new('RGB', input_image.size, 'black'), "Starting generation...")]
