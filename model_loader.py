@@ -1,7 +1,7 @@
 import os
 import torch
 import requests
-from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler  # Assuming you're using DiffusionPipeline from diffusers library
+from diffusers import StableDiffusionXLInpaintPipeline, DPMSolverMultistepScheduler  # Assuming you're using DiffusionPipeline from diffusers library
 from safetensors.torch import load_file
 import config
 
@@ -40,7 +40,7 @@ def load_model_with_lora():
 
     print(config.DEVICE)
     print("Loading the Diffusion model...")
-    pipeline = DiffusionPipeline.from_pretrained(
+    pipeline = StableDiffusionXLInpaintPipeline.from_pretrained(
         model_path,
         torch_dtype=torch.float16
     )
