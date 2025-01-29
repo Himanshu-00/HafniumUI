@@ -50,6 +50,7 @@ def create_gradio_interface(pipeline_with_lora):
                     object_fit="contain",
                     height=600
                 )
+                progress_bar = gr.Progress()
 
                 with gr.Row():
                     # Add a new slider for the number of images to generate
@@ -67,7 +68,7 @@ def create_gradio_interface(pipeline_with_lora):
             generate_btn.click(
                 fn=generate_images,
                 inputs=[color_picker, guidance_scale, steps, input_image, num_outputs, state],
-                outputs=output_image,
+                outputs=[output_image, progress_bar],
                 show_progress=True
             )
 
