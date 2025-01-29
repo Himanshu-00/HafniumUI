@@ -61,7 +61,7 @@ def generate_images(color, gs, steps, img, num_outputs, current_state, progress=
         # Add to our list with a caption
         current_images.append((new_image, f"Generated Image {i+1}/{num_outputs}"))
         # Yield current state for gallery update
-        yield current_images, gr.update(value=f"Image {i+1} Generated")
+        yield current_images, f"Image {i + 1} Generated"
         
 
 # Load the model with LoRA
