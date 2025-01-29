@@ -49,17 +49,19 @@ def generate_images(color, gs, steps, img, num_outputs, current_state, progress=
 
     for i in progress.tqdm(range(num_outputs)):
         progress(i/num_outputs, f"Generating image {i+1}/{num_outputs}")
+        
         # Generate new image
-        new_image, preview = generate_image_with_lora(
+        new_image = generate_image_with_lora(
         pipeline_with_lora,
         guidance_scale=gs,
         num_steps=steps,
         input_image=img
         )
+        
         # Add to our list with a caption
         current_images.append((new_image, f"Generated Image {i+1}/{num_outputs}"))
         # Yield current state for gallery update
-        yield preview, current_images
+        yield current_images
         
 
 # Load the model with LoRA
