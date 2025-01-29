@@ -50,6 +50,7 @@ def load_model_with_lora():
     # Set DPM++ 2M Karras scheduler
     pipeline.scheduler = DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
     pipeline.scheduler.config.use_karras_sigmas = True  # Enable Karras noise schedule
+    print("Model loaded successfully with DPM++ 2M Karras scheduler.")
     print("Model loaded successfully.")
 
     try:
