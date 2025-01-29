@@ -6,6 +6,7 @@ from model_loader import load_model_with_lora
 from image_preprocessing import segment_and_refine_mask
 import gradio as gr
 from config import PROMPT, NPROMPT
+from tqdm import tqdm
 
 def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
     """Generate a single image using the model with LoRA"""
@@ -40,14 +41,16 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
     except Exception as e:
         raise Exception(f"Error generating image: {str(e)}")
 
-def generate_images(color, gs, steps, img, num_outputs, current_state, progress=gr.Progress(track_tqdm=True)):
+def generate_images(color, gs, steps, img, num_outputs, current_state, progress=gr.Progress()):
     """Generate multiple images and update the gallery progressively"""
     try:
         current_images = []
         
-        for i in progress.tqdm(range(num_outputs), desc="Generating images"):
-            # Use tqdm for overall progress tracking
-            progress.update(desc=f"Generating image {i+1}/{num_outputs}")
+        # Create progress iterator
+        pbar = progress.tqdm(range(num_outputs))
+        
+        for i in pbar:
+            print(f"Generating image {i+1}/{num_outputs}")
             
             new_image = generate_image_with_lora(
                 pipeline_with_lora,
