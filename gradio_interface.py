@@ -56,7 +56,10 @@ def create_gradio_interface(pipeline_with_lora):
             
             # Button functionality
             generate_btn.click(
-                fn=generate_images,
+                fn=lambda color, guidance, steps, image, num: (
+                    output_image.clear(),  # Clear previous images
+                    generate_images(color, guidance, steps, image, num)  # Generate new images
+                ),
                 inputs=[color_picker, guidance_scale, steps, input_image, num_outputs],
                 outputs=output_image,
                 show_progress=True
