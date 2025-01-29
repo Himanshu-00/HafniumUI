@@ -119,15 +119,13 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
             raise ValueError("Invalid image format. Please provide a valid image.")
 
         mask = segment_and_refine_mask(input_image)
-
-        # **1️⃣ Yield Input Image Immediately**
         yield [(input_image, "Starting generation...")]
 
-        # Create a shared dictionary to store intermediate results
         callback_data = {"current_image": None}
 
-        def preview_callback(step: int, timestep: int, latents: torch.FloatTensor):
-            # Convert latents to image
+        # Fixed callback signature with proper arguments
+        def preview_callback(step: int, timestep: int, callback_kwargs: dict):
+            latents = callback_kwargs["latents"]  # Get latents from callback_kwargs
             with torch.no_grad():
                 latents_copy = latents.clone().detach()
                 latents_copy = 1 / 0.18215 * latents_copy
@@ -136,11 +134,10 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                 image_np = image_tensor.cpu().permute(0, 2, 3, 1).numpy()
                 image_np = (image_np * 255).round().astype("uint8")
                 callback_data["current_image"] = Image.fromarray(image_np[0])
-            
-            # Return empty dict to satisfy pipeline requirements
-            return {}
+            return callback_kwargs  # Return modified callback_kwargs
 
-        # Run the pipeline
+        generator = torch.Generator(device=pipeline.device).manual_seed(42)
+
         result = pipeline(
             prompt=prompt,
             image=input_image,
@@ -148,18 +145,17 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
             negative_prompt=negative_prompt,
             num_inference_steps=num_steps,
             guidance_scale=guidance_scale,
-            generator=torch.Generator(device=pipeline.device).manual_seed(42),
+            generator=generator,
             callback_on_step_end=preview_callback,
-            callback_on_step_end_tensor_inputs=["latents"]
+            callback_on_step_end_tensor_inputs=["latents"]  # Correct tensor inputs
         )
 
-        # Yield intermediate images from the main generator
+        # Yield intermediate images
         for step in range(num_steps):
             progress(step/num_steps, desc=f"Step {step+1}/{num_steps}")
             if callback_data["current_image"]:
                 yield [(callback_data["current_image"], f"Step {step+1}/{num_steps}")]
         
-        # Final image
         yield [(result.images[0], "Final Result")]
 
     except Exception as e:
