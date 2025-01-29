@@ -47,10 +47,16 @@ def load_model_with_lora():
         safety_checker=None,
         requires_safety_checker=False
     )
-    # Set DPM++ 2M Karras scheduler
-    pipeline.scheduler = DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
-    pipeline.scheduler.config.use_karras_sigmas = True  # Enable Karras noise schedule
-    print("Model loaded successfully with DPM++ 2M Karras scheduler.")
+
+     # Set DPM++ 2M SDE scheduler
+    pipeline.scheduler = DPMSolverMultistepScheduler.from_config(
+        pipeline.scheduler.config,
+        algorithm_type="sde-dpmsolver++",  # Critical for inpainting quality
+        use_karras_sigmas=True,
+        lambda_min_clipped=-float("inf"),  # Better mask handling
+        variance_type="learned_range"  # Match SDXL training
+    )
+    print("Model loaded successfully with DPM++ 2M SDE scheduler.")
     print("Model loaded successfully.")
 
     try:
@@ -91,15 +97,6 @@ def load_model_with_lora():
         pipeline.to(device)
         print("Model and LoRA weights successfully loaded and moved to device.")
 
-        # Memory optimizations
-        pipeline.enable_model_cpu_offload()
-        pipeline.enable_attention_slicing()
-
-         # Alternative to xformers
-        if not hasattr(pipeline, 'enable_xformers_memory_efficient_attention'):
-            print("Using PyTorch's native scaled dot-product attention")
-            torch.backends.cuda.enable_flash_sdp(True)
-            torch.backends.cuda.enable_mem_efficient_sdp(True)
 
         print(f"Model moved to {device} with memory optimizations")
         return pipeline

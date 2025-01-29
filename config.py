@@ -66,16 +66,13 @@ PROMPT4 = """
 
 NPROMPT = """
 
-(deformed, distorted, disfigured:1.3), (poor proportions:1.2), 
-(unnatural anatomy:1.3), (asymmetrical features:1.1), (unrealistic hands:1.3), 
-(awkward posture:1.2), (unnatural facial proportions:1.3), (elongated neck:1.2), 
-(slouched shoulders:1.1), (crooked tie:1.1), (improper suit fit:1.2), (low resolution, blurry, pixelated:1.3), 
-(cartoonish, painting, drawing, anime:1.4), (harsh lighting, overexposed:1.1), (busy background:1.2), 
-(distorted perspective:1.1), (unprofessional appearance:1.2), (makeup, styled hair:1.1), (logo, pattern, accessory:1.2), 
-(dramatic expression:1.2), (tilted head:1.1), (body rotation:1.1), (bowtie, patterned tie:1.3), (improper tie width:1.1), 
-(3D rendering artifacts:1.1), (Unnatural limb lengths:1.3), (Compressed torso:1.2), (Irregular shoulder width:1.2), 
-(Forced hand positions:1.3), (Unrealistic shadow casting:1.1), (Unnatural jawline:1.1), (Facial distortion:1.2), (Inconsistent scale:1.3), 
-(Unbalanced features:1.2), (Abnormal eye spacing:1.1), (Unnatural cheekbones:1.1), (Stretched silhouette:1.2)
-
+(deformed iris, deformed pupils, deformed hands:1.3), 
+(asymmetrical eyes, unnatural facial proportions:1.2), (poor posture, slouching shoulders:1.1), 
+(improper suit tailoring, wrinkled fabric:1.2), (low resolution, blurry, pixelated:1.3),
+(cartoonish rendering, 3D model, drawing:1.4), (harsh lighting, overexposed:1.1), 
+(busy background, cluttered environment:1.2), (unprofessional appearance, casual clothing:1.2), 
+(makeup, styled hair, accessories:1.1), (bowtie, patterned tie, wide tie:1.3), (unnatural jawline, facial distortion:1.2), 
+(stretched limbs, compressed torso:1.3), (awkward hand position, missing fingers:1.4), (body tilt, angled posture:1.1), 
+(shadow artifacts, rendering glitches:1.1)
 
 """
