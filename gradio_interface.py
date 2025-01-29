@@ -228,9 +228,12 @@ def create_gradio_interface(pipeline_with_lora):
                             input_image=img
                         )
 
-                        # Yield each step for live updates
+                        # **🔹 Yield Each Step Properly**
                         for step_result in generator:
                             yield step_result
+                        
+                        # **🔹 Ensure Progress is Reset for Next Image**
+                        progress(1.0, "Generation complete")
 
 
                 

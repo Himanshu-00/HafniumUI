@@ -109,43 +109,45 @@ from config import PROMPT, NPROMPT
 from diffusers import DiffusionPipeline
 
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image, progress=gr.Progress()):
-    """Generate a single image with live streaming updates."""
+    """Generate a single image with live updates, ensuring correct intermediate steps."""
     try:
         if isinstance(input_image, np.ndarray):
             input_image = Image.fromarray(input_image).convert("RGB")
         elif isinstance(input_image, Image.Image):
             input_image = input_image.convert("RGB")
         else:
-            raise Exception("Invalid image format. Please provide a valid image.")
-        
+            raise ValueError("Invalid image format. Please provide a valid image.")
+
         mask = segment_and_refine_mask(input_image)
 
-        # Yield the input image first instead of a black screen
+        # **1️⃣ Yield Input Image Immediately**
         yield [(input_image, "Starting generation...")]
 
+        # **2️⃣ Ensure the Callback Works Properly**
         def preview_callback(step: int, timestep: int, latents: torch.FloatTensor):
-            """Updates the UI with intermediate images."""
+            """Updates UI with intermediate images at each step."""
             progress_percentage = (step / num_steps) * 100
             progress(step / num_steps, desc=f"Step {step}/{num_steps} ({progress_percentage:.1f}%)")
 
-            # Convert latents to image
+            # Convert latents to image correctly
             with torch.no_grad():
-                latents_copy = latents.detach().clone()
+                latents_copy = latents.clone().detach()
                 latents_copy = 1 / 0.18215 * latents_copy
                 image_tensor = pipeline.vae.decode(latents_copy).sample
                 image_tensor = (image_tensor / 2 + 0.5).clamp(0, 1)
-                image_np = image_tensor.detach().cpu().permute(0, 2, 3, 1).numpy()
+                image_np = image_tensor.cpu().permute(0, 2, 3, 1).numpy()
                 image_np = (image_np * 255).round().astype("uint8")
-                current_image = Image.fromarray(image_np[0])
-                
-                print(f"[Console Log] Step {step}/{num_steps} - Image Updated")
-                
-                # Yield intermediate image for live preview
-                yield [(current_image, f"Step {step}/{num_steps}")]
+                intermediate_image = Image.fromarray(image_np[0])
 
-        # Set manual seed for reproducibility
+                print(f"[Console Log] Step {step}/{num_steps} - Intermediate image updated")
+
+                # **3️⃣ Yield Intermediate Image to Gradio UI**
+                yield [(intermediate_image, f"Step {step}/{num_steps}")]
+
+        # **4️⃣ Set a Generator to Ensure Consistency**
         generator = torch.Generator(device=pipeline.device).manual_seed(42)
 
+        # **5️⃣ Run the Pipeline with the Callback**
         result = pipeline(
             prompt=prompt,
             image=input_image,
@@ -155,14 +157,16 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
             guidance_scale=guidance_scale,
             generator=generator,
             callback=preview_callback,
-            callback_steps=1  # Update on every step
+            callback_steps=1  # Update at every step
         )
 
-        # Final result
+        # **6️⃣ Ensure Final Image is Displayed**
         yield [(result.images[0], "Final Result")]
 
     except Exception as e:
-        raise Exception(f"Error generating image: {e}")
+        print(f"[Error] {str(e)}")
+        raise ValueError(f"Error generating image: {e}")
+
 
 # Load the model with LoRA
 pipeline_with_lora = load_model_with_lora()
