@@ -45,7 +45,7 @@ def create_gradio_interface(pipeline_with_lora):
                 output_image = gr.Gallery(
                     label="Generated Images",
                     elem_id="output_gallery",
-                    columns=5,
+                    columns=4,
                     preview=True,
                     object_fit="contain",
                     height=600
@@ -60,8 +60,10 @@ def create_gradio_interface(pipeline_with_lora):
                 
                 
                 
-                def clear_gallery(state):
-                    return []
+                def clear_gallery_and_generate(state):
+                    # Clear the gallery (reset the state) before generating new images
+                    state = []
+                    return state
             
             # Button functionality
             generate_btn.click(
@@ -71,10 +73,10 @@ def create_gradio_interface(pipeline_with_lora):
                 show_progress=True
             )
 
-            # Connect the clear button
-            clear_btn.click(
-                fn=clear_gallery,
-                inputs=[],
+            # Clear gallery functionality added to the generate button
+            generate_btn.click(
+                fn=clear_gallery_and_generate,
+                inputs=[state],
                 outputs=output_image
             )
 
