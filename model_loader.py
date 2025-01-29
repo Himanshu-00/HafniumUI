@@ -56,6 +56,11 @@ def load_model_with_lora():
         lambda_min_clipped=-float("inf"),  # Better mask handling
         variance_type="learned_range"  # Match SDXL training
     )
+
+     # Force input channels compatibility
+    pipeline.unet.config.in_channels = 4  # 3 for image + 1 for mask
+    pipeline.vae.config.latent_channels = 4
+    
     print("Model loaded successfully with DPM++ 2M SDE scheduler.")
     print("Model loaded successfully.")
 
