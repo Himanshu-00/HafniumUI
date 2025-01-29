@@ -217,7 +217,7 @@ def create_gradio_interface(pipeline_with_lora):
                     for i in range(num_outputs):
                         print(f"[Console Log] Generating image {i+1}/{num_outputs} with color: {color}")
                         progress(i / num_outputs, f"Generating image {i+1}/{num_outputs}")
-                        
+
                         # Stream the generation process
                         generator = generate_image_with_lora(
                             pipeline_with_lora,
@@ -231,6 +231,7 @@ def create_gradio_interface(pipeline_with_lora):
                         # Yield each step for live updates
                         for step_result in generator:
                             yield step_result
+
 
                 
                 def clear_gallery():
