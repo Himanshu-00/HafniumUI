@@ -1,7 +1,7 @@
 import os
 import torch
 import requests
-from diffusers import StableDiffusionXLInpaintPipeline, DPMSolverMultistepScheduler  # Assuming you're using DiffusionPipeline from diffusers library
+from diffusers import DiffusionPipeline  # Assuming you're using DiffusionPipeline from diffusers library
 from safetensors.torch import load_file
 import config
 
@@ -40,32 +40,10 @@ def load_model_with_lora():
 
     print(config.DEVICE)
     print("Loading the Diffusion model...")
-    pipeline = StableDiffusionXLInpaintPipeline.from_pretrained(
+    pipeline = DiffusionPipeline.from_pretrained(
         model_path,
         torch_dtype=torch.float16
     )
-
-    # Best configuration for realistic inpainting (SDXL optimized)
-    scheduler_config = pipeline.scheduler.config
-
-    pipeline.scheduler = DPMSolverMultistepScheduler.from_config(
-        scheduler_config,
-        algorithm_type="sde-dpmsolver++",  # Changed to SDE variant for better detail
-        solver_order=2,  # Reduced for better VRAM/memory balance
-        use_karras_sigmas=True,
-        lower_order_final=True,
-        solver_type="midpoint",  # Better for inpainting than heun
-        prediction_type="epsilon",  # Keep for SDXL base
-        thresholding=True,
-        dynamic_thresholding_ratio=0.90,  # Lowered to prevent artifacts
-        sample_max_value=1.0,
-        steps_offset=1,
-        timestep_spacing="trailing",  # Keep trailing for inpainting
-        # New parameters for SDXL inpainting
-        lambda_min_clipped=-float("inf"),  # Better mask blending
-        variance_type="learned_range"  # Match SDXL training
-    )
-
     print("Model loaded successfully.")
 
 
