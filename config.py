@@ -66,28 +66,16 @@ PROMPT4 = """
 
 NPROMPT = """
 
-"No unnatural body proportions or distortions. Ensure realistic body symmetry, with proportional limbs and torso. No exaggerated or elongated limbs, torsos, or necks." 
-"Avoid unrealistic poses, joint misalignment, or awkward hand positions. The body should be in natural, neutral alignment with no slouching or extreme tilting."
-"No low-resolution, pixelated, blurry, or out-of-focus images; the image must maintain sharp, high-definition details."
-"No stylized, cartoon-like, illustrated, painterly, or non-photorealistic rendering styles; the output must appear entirely realistic."
-"No exaggerated facial expressions, dramatic makeup, extreme contouring, or overly styled, unnatural-looking hair."
-"No informal, wrinkled, ill-fitting, or inappropriate clothing; avoid casual wear, visible logos, flashy designs, or distracting accessories."
-"No harsh, uneven, or extreme lighting conditions; avoid overexposure, harsh shadows, lens flares, or dramatic contrasts."
-"No busy backgrounds; the image must have a simple, controlled studio-like setting."
-"No perspective distortions, unflattering camera angles, or unnatural proportions; ensure a direct, centered, and balanced view."
-"No heavy post-processing, unnatural color grading, or excessive digital manipulation; maintain a natural and realistic aesthetic."
-"No dynamic or candid poses; the subject must maintain a neutral, professional, and controlled posture."
-"No facial orientation other than a direct, centered front-facing view with a neutral and professional expression."
-"No visible body tilt or unnatural inclinations; ensure upright body alignment without extreme angles (e.g., no 100-degree or diagonal tilt)."
-"No unnatural hand positioning or gestures; hands, if visible, must rest naturally without appearing forced or awkward."
-"No bold, patterned, reflective, or unconventional neckwear; decorative or alternative styles are to be avoided."
-"Maintain precise, anatomically correct body proportions, with natural shoulder width and limb length."
-"No visual stretching or compression of body parts; preserve a natural human silhouette."
-"NO bow-tie and Ensure a conservative, solid-color necktie in navy blue or charcoal gray, neatly knotted at the collar, with a matte, non-reflective finish."
-"The tie width must be proportional to the suit lapels, positioned centrally for a polished appearance."
-"Avoid body positions or angles that distort the natural upright posture; the subject must face the camera with no extreme tilts or unusual rotations."
-"No disproportionate body shapes, no stretched or compressed limbs, no irregular shoulder widths, no unnatural silhouettes, no distorted anatomy, no warped proportions."
-
+(deformed, distorted, disfigured:1.3), (poor proportions:1.2), 
+(unnatural anatomy:1.3), (asymmetrical features:1.1), (unrealistic hands:1.3), 
+(awkward posture:1.2), (unnatural facial proportions:1.3), (elongated neck:1.2), 
+(slouched shoulders:1.1), (crooked tie:1.1), (improper suit fit:1.2), (low resolution, blurry, pixelated:1.3), 
+(cartoonish, painting, drawing, anime:1.4), (harsh lighting, overexposed:1.1), (busy background:1.2), 
+(distorted perspective:1.1), (unprofessional appearance:1.2), (makeup, styled hair:1.1), (logo, pattern, accessory:1.2), 
+(dramatic expression:1.2), (tilted head:1.1), (body rotation:1.1), (bowtie, patterned tie:1.3), (improper tie width:1.1), 
+(3D rendering artifacts:1.1), (Unnatural limb lengths:1.3), (Compressed torso:1.2), (Irregular shoulder width:1.2), 
+(Forced hand positions:1.3), (Unrealistic shadow casting:1.1), (Unnatural jawline:1.1), (Facial distortion:1.2), (Inconsistent scale:1.3), 
+(Unbalanced features:1.2), (Abnormal eye spacing:1.1), (Unnatural cheekbones:1.1), (Stretched silhouette:1.2)
 
 
 """
