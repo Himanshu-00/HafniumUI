@@ -175,8 +175,6 @@ def create_gradio_interface(pipeline_with_lora):
     )
     
     with gr.Blocks(theme=theme) as HafniumUI:
-        state = gr.State([])
-        
         gr.Markdown("# SDXL with LoRA Integration and Inpainting")
         
         with gr.Row():
@@ -200,13 +198,10 @@ def create_gradio_interface(pipeline_with_lora):
                     steps = gr.Slider(minimum=1, maximum=100, value=30, step=1, label="Number of Steps", interactive=True)
             
             with gr.Column(min_width=800):
-                # Live preview at the top
-                preview_image = gr.Image(label="Live Preview", show_label=True)
-                
                 output_gallery = gr.Gallery(
-                    label="Generated Images",
+                    label="Live Generation Progress",
                     elem_id="output_gallery",
-                    columns=5,
+                    columns=1,  # Single column for better viewing of progress
                     preview=True,
                     object_fit="contain",
                     height=600,
@@ -218,14 +213,12 @@ def create_gradio_interface(pipeline_with_lora):
                     generate_btn = gr.Button("Generate Image with LoRA", variant="primary")
                     clear_btn = gr.Button("Clear Gallery")
                 
-                def generate_images(color, gs, steps, img, num_outputs, current_state, progress=gr.Progress(track_tqdm=True)):
-                    current_images = []
-                    
+                def generate_images(color, gs, steps, img, num_outputs, progress=gr.Progress(track_tqdm=True)):
                     for i in range(num_outputs):
-                        progress(i/num_outputs, f"Starting image {i+1}/{num_outputs}")
+                        progress(i/num_outputs, f"Generating image {i+1}/{num_outputs}")
                         
-                        # Generate new image with preview
-                        final_image, last_preview = generate_image_with_lora(
+                        # Stream the generation process
+                        generator = generate_image_with_lora(
                             pipeline_with_lora,
                             prompt=color,
                             negative_prompt=NPROMPT,
@@ -234,27 +227,25 @@ def create_gradio_interface(pipeline_with_lora):
                             input_image=img
                         )
                         
-                        # Add to our list with a caption
-                        current_images.append((final_image, f"Generated Image {i+1}/{num_outputs}"))
-                        # Update both preview and gallery
-                        yield last_preview, current_images
+                        # Yield each step for live updates
+                        for step_result in generator:
+                            yield step_result
                 
-                def clear_gallery(state):
-                    return None, []  # Clear both preview and gallery
+                def clear_gallery():
+                    return None
                 
-                # Connect the generate button
+                # Connect the generate button with streaming
                 generate_btn.click(
                     fn=generate_images,
-                    inputs=[color_picker, guidance_scale, steps, input_image, num_outputs, state],
-                    outputs=[preview_image, output_gallery],
+                    inputs=[color_picker, guidance_scale, steps, input_image, num_outputs],
+                    outputs=output_gallery,
                     show_progress=True
                 )
                 
                 # Connect the clear button
                 clear_btn.click(
                     fn=clear_gallery,
-                    inputs=[state],
-                    outputs=[preview_image, output_gallery]
+                    outputs=output_gallery
                 )
     
     return HafniumUI

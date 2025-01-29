@@ -109,7 +109,7 @@ from config import PROMPT, NPROMPT
 from diffusers import DiffusionPipeline
 
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image, progress=gr.Progress()):
-    """Generate a single image with live preview updates."""
+    """Generate a single image with live streaming updates."""
     try:
         if isinstance(input_image, np.ndarray):
             input_image = Image.fromarray(input_image).convert("RGB")
@@ -119,31 +119,30 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
             raise Exception("Invalid image format. Please provide a valid image.")
         
         mask = segment_and_refine_mask(input_image)
-        progress(0, desc="Starting generation...")
-
-        # Store the preview image in a list to access it from callback
-        preview_store = {"current_image": None}
         
         def preview_callback(step: int, timestep: int, latents: torch.FloatTensor):
-            # Calculate progress percentage
+            # Calculate progress
             progress_percentage = (step / num_steps) * 100
-            progress(step/num_steps, desc=f"Generating... {progress_percentage:.1f}%")
+            progress(step/num_steps, desc=f"Step {step}/{num_steps} ({progress_percentage:.1f}%)")
             
-            # Store the current latents
+            # Convert latents to image
             with torch.no_grad():
                 latents_copy = latents.detach().clone()
-                # Scale and decode the image latents with vae
                 latents_copy = 1 / 0.18215 * latents_copy
                 image = pipeline.vae.decode(latents_copy).sample
                 image = (image / 2 + 0.5).clamp(0, 1)
                 image = image.detach().cpu().permute(0, 2, 3, 1).numpy()
                 image = (image * 255).round().astype("uint8")
-                preview_store["current_image"] = Image.fromarray(image[0])
-            
-            return preview_store["current_image"]
+                current_image = Image.fromarray(image[0])
+                # Yield the current state for streaming
+                yield [(current_image, f"Step {step}/{num_steps}")]
 
-        # Run the pipeline with callback
+        # Run the pipeline with streaming callback
         generator = torch.Generator(device=pipeline.device).manual_seed(42)
+        
+        # Initial empty state
+        yield [(Image.new('RGB', input_image.size, 'black'), "Starting generation...")]
+        
         result = pipeline(
             prompt=prompt,
             image=input_image,
@@ -156,12 +155,11 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
             callback_steps=1
         )
         
-        progress(1.0, desc="Generation complete!")
-        return result.images[0], preview_store["current_image"]
-    
+        # Yield final result
+        yield [(result.images[0], "Final Result")]
+        
     except Exception as e:
         raise Exception(f"Error generating image: {e}")
-
     
 # Load the model with LoRA
 pipeline_with_lora = load_model_with_lora()
