@@ -9,7 +9,7 @@ import gradio as gr
 from config import PROMPT, NPROMPT
 
 # Function to generate an image using the model with LoRA
-def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
+def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image, progress=gr.Progress()):
     try:
 
         print(f"Generating images with -  guidance scale: {guidance_scale}, and steps: {num_steps}.")
@@ -42,17 +42,15 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
         raise Exception(f"Error generating images: {e}")
     
 # Function to generate images one by one and update gallery
-def generate_images(color, gs, steps, img, num_outputs, current_state):
+def generate_images(color, gs, steps, img, num_outputs, current_state, progress=gr.Progress(track_tqdm=True)):
     progress = gr.Progress()
     # Clear the gallery if we're starting a new generation
     current_images = []
 
-    for i in range(num_outputs):
-        # Update progress bar
-        progress(100 * (i + 1) / num_outputs, desc=f"Generating image {i+1}/{num_outputs}")
-        
+    for i in progress.tqdm(range(num_outputs)):
+        progress(i/num_outputs, f"Generating image {i+1}/{num_outputs}")
         # Generate new image
-        new_image = generate_image_with_lora(
+        new_image, preview = generate_image_with_lora(
         pipeline_with_lora,
         guidance_scale=gs,
         num_steps=steps,
@@ -61,10 +59,8 @@ def generate_images(color, gs, steps, img, num_outputs, current_state):
         # Add to our list with a caption
         current_images.append((new_image, f"Generated Image {i+1}/{num_outputs}"))
         # Yield current state for gallery update
-        yield gr.update(value=current_images, visible=True)
-     
-    # Final progress
-    progress(100, desc="Generation complete!")    
+        yield preview, current_images
+        
 
 # Load the model with LoRA
 pipeline_with_lora = load_model_with_lora()
