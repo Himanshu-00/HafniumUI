@@ -48,7 +48,7 @@ def generate_images(color, gs, steps, img, num_outputs, current_state, progress=
     current_images = current_state
 
     for i in progress.tqdm(range(num_outputs)):
-        progress(i/num_outputs, f"Generating image {i+1}/{num_outputs}")
+        progress(f"Generating image {i+1}/{num_outputs}")
         
         # Generate new image
         new_image = generate_image_with_lora(
