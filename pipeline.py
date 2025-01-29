@@ -54,9 +54,6 @@ def generate_images(color, gs, steps, img, num_outputs, progress=gr.Progress(tra
             guidance_scale=gs,
             num_steps=steps,
             input_image=img,
-            denoising_start=0.4,         
-            denoising_end=0.9,    
-            cross_attention_kwargs={"scale": 0.8} 
         )
         
         current_images.append((new_image, f"Generated Image {i+1}/{num_outputs}"))
