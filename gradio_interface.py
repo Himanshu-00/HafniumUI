@@ -63,14 +63,17 @@ def create_gradio_interface(pipeline_with_lora):
                 def clear_gallery(state):
                     return []
                 
-                def update_gallery(new_images, state):
-                    # This function appends new images to the state and returns the updated state
+                def generate_and_update_gallery(color, guidance_scale, steps, input_image, num_outputs, state):
+                    # Generate new images
+                    new_images = generate_images(color, guidance_scale, steps, input_image, num_outputs)
+                    # Append the new images to the state
                     state.append(new_images)
-                    return state
+                    return new_images  # Return the new images to display in the gallery
+
             
             # Button functionality
             generate_btn.click(
-                fn=generate_images,
+                fn=generate_and_update_gallery,
                 inputs=[color_picker, guidance_scale, steps, input_image, num_outputs, state],
                 outputs=output_image,
                 show_progress=True
@@ -80,13 +83,6 @@ def create_gradio_interface(pipeline_with_lora):
             clear_btn.click(
                 fn=clear_gallery,
                 inputs=[state],
-                outputs=output_image
-            )
-
-             # Ensure that the first image is shown in the gallery when generated
-            generate_btn.click(
-                fn=update_gallery,
-                inputs=[generate_images, state],
                 outputs=output_image
             )
 
