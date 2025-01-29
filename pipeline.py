@@ -25,6 +25,11 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image, p
         # Generate mask once and reuse for all generations
         mask = segment_and_refine_mask(input_image)
 
+        # Convert and validate input
+        input_image = input_image.convert("RGB").resize((1024, 1024))
+        mask = segment_and_refine_mask(input_image)
+        validate_inputs(input_image, mask)
+
         with torch.no_grad():
             image = pipeline(
                 prompt=PROMPT, 
@@ -32,7 +37,11 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image, p
                 guidance_scale=guidance_scale,
                 num_inference_steps=num_steps,
                 image=input_image,
-                mask_image=mask
+                mask_image=mask,
+                original_size=(1024, 1024),
+                target_size=(1024, 1024),
+                strength=config.DENOISING_STRENGTH,
+                cross_attention_kwargs={"scale": config.LORA_SCALE}
             ).images[0]
             
         print(f"Successfully generated images.")    
@@ -62,3 +71,13 @@ def generate_images(color, gs, steps, img, num_outputs, progress=gr.Progress(tra
 
 # Load the model with LoRA
 pipeline_with_lora = load_model_with_lora()
+
+
+
+def validate_inputs(input_image, mask):
+    if input_image.size != (1024, 1024):
+        raise ValueError("Input image must be 1024x1024 pixels")
+    if mask.mode != "L":
+        raise ValueError("Mask must be grayscale (L mode)")
+    if mask.size != (1024, 1024):
+        raise ValueError("Mask must be 1024x1024 pixels")

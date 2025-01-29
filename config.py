@@ -76,3 +76,10 @@ NPROMPT = """
 (shadow artifacts, rendering glitches:1.1)
 
 """
+
+
+
+SEED = 42
+DENOISING_STRENGTH = 0.8
+LORA_ALPHA = 0.85
+LORA_SCALE = 0.75
