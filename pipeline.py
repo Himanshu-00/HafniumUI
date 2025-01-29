@@ -123,11 +123,11 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         # **1️⃣ Yield Input Image Immediately**
         yield [(input_image, "Starting generation...")]
 
-        # **2️⃣ Set Up Callback for Live Updates**
-        def preview_callback(step: int, timestep: int, latents: torch.FloatTensor, extra_data=None):
-            print(f"[Callback] Step: {step}, Timestep: {timestep}")
+        # Create a shared dictionary to store intermediate results
+        callback_data = {"current_image": None}
 
-            # Convert latents to an intermediate image
+        def preview_callback(step: int, timestep: int, latents: torch.FloatTensor):
+            # Convert latents to image
             with torch.no_grad():
                 latents_copy = latents.clone().detach()
                 latents_copy = 1 / 0.18215 * latents_copy
@@ -135,18 +135,12 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                 image_tensor = (image_tensor / 2 + 0.5).clamp(0, 1)
                 image_np = image_tensor.cpu().permute(0, 2, 3, 1).numpy()
                 image_np = (image_np * 255).round().astype("uint8")
-                intermediate_image = Image.fromarray(image_np[0])
+                callback_data["current_image"] = Image.fromarray(image_np[0])
+            
+            # Return empty dict to satisfy pipeline requirements
+            return {}
 
-                # **Yield Intermediate Image**
-                yield [(intermediate_image, f"Step {step}")]
-
-
-
-
-        # **4️⃣ Set Up Random Generator**
-        generator = torch.Generator(device=pipeline.device)
-
-        # **5️⃣ Run the Pipeline with `callback_on_step_end`**
+        # Run the pipeline
         result = pipeline(
             prompt=prompt,
             image=input_image,
@@ -154,16 +148,23 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
             negative_prompt=negative_prompt,
             num_inference_steps=num_steps,
             guidance_scale=guidance_scale,
-            generator=generator,
-            callback_on_step_end=preview_callback  # 🔥 Correct way to do step updates
+            generator=torch.Generator(device=pipeline.device).manual_seed(42),
+            callback_on_step_end=preview_callback,
+            callback_on_step_end_tensor_inputs=["latents"]
         )
 
-        # **6️⃣ Ensure Final Image is Displayed**
+        # Yield intermediate images from the main generator
+        for step in range(num_steps):
+            progress(step/num_steps, desc=f"Step {step+1}/{num_steps}")
+            if callback_data["current_image"]:
+                yield [(callback_data["current_image"], f"Step {step+1}/{num_steps}")]
+        
+        # Final image
         yield [(result.images[0], "Final Result")]
 
     except Exception as e:
         print(f"[Error] {str(e)}")
-        raise ValueError(f"Error generating image: {e}")
+        raise gr.Error(f"Image generation failed: {str(e)}")
 
 # Load the model with LoRA
 pipeline_with_lora = load_model_with_lora()
