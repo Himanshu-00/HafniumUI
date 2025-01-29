@@ -47,8 +47,10 @@ def generate_images(color, gs, steps, img, num_outputs, current_state):
     # Clear the gallery if we're starting a new generation
     current_images = []
 
-    for i in progress.tqdm(range(num_outputs)):
-        progress(0, desc=f"Generating image {i+1}/{num_outputs}")
+    for i in range(num_outputs):
+        # Update progress bar
+        progress(100 * (i + 1) / num_outputs, desc=f"Generating image {i+1}/{num_outputs}")
+        
         # Generate new image
         new_image = generate_image_with_lora(
         pipeline_with_lora,
