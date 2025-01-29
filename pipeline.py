@@ -36,7 +36,7 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                     mask_image=mask
                 ).images[0]
                 
-            generated_images.append(image)
+            generated_images.append(image, None)
             yield generated_images.copy() #Yield incremental results
 
         print(f"Successfully generated {num_images} images.")
