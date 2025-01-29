@@ -11,9 +11,6 @@ from config import PROMPT, NPROMPT
 # Function to generate an image using the model with LoRA
 def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, num_steps, input_image, num_images=1):
     try:
-        if not prompt.strip():
-            raise Exception("Please provide a prompt.")
-
         print(f"Generating {num_images} images with -  guidance scale: {guidance_scale}, and steps: {num_steps}.")
 
         # Convert input image to PIL
@@ -40,9 +37,10 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
                 ).images[0]
                 
             generated_images.append(image)
+            yield generated_images.copy() #Yield incremental results
 
         print(f"Successfully generated {num_images} images.")
-        return generated_images
+        # return generated_images
 
     except Exception as e:
         raise Exception(f"Error generating images: {e}")
