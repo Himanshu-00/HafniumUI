@@ -124,19 +124,19 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
         callback_data = {"current_image": None}
 
         # Fixed callback signature with proper arguments
-        def preview_callback(step: int, timestep: int, callback_kwargs: dict):
+        def preview_callback(pipe, step_index, timestep, callback_kwargs):
             latents = callback_kwargs["latents"]  # Get latents from callback_kwargs
             with torch.no_grad():
-                latents_copy = latents.clone().detach()
-                latents_copy = 1 / 0.18215 * latents_copy
-                image_tensor = pipeline.vae.decode(latents_copy).sample
-                image_tensor = (image_tensor / 2 + 0.5).clamp(0, 1)
-                image_np = image_tensor.cpu().permute(0, 2, 3, 1).numpy()
-                image_np = (image_np * 255).round().astype("uint8")
-                callback_data["current_image"] = Image.fromarray(image_np[0])
-            return callback_kwargs  # Return modified callback_kwargs
-
-        generator = torch.Generator(device=pipeline.device).manual_seed(42)
+                # Convert latents to image
+                latents_copy = 1 / 0.18215 * latents
+                image = pipeline.vae.decode(latents_copy).sample
+                image = (image / 2 + 0.5).clamp(0, 1)
+                image = image.cpu().permute(0, 2, 3, 1).float().numpy()
+                image = (image[0] * 255).astype(np.uint8)
+                callback_data["current_image"] = Image.fromarray(image)
+            
+            return callback_kwargs  # Must return modified callback_kwargs
+        
 
         result = pipeline(
             prompt=prompt,
@@ -145,7 +145,7 @@ def generate_image_with_lora(pipeline, prompt, negative_prompt, guidance_scale, 
             negative_prompt=negative_prompt,
             num_inference_steps=num_steps,
             guidance_scale=guidance_scale,
-            generator=generator,
+            generator=torch.Generator(device=pipeline.device),
             callback_on_step_end=preview_callback,
             callback_on_step_end_tensor_inputs=["latents"]  # Correct tensor inputs
         )
