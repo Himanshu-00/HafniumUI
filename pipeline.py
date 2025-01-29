@@ -43,9 +43,9 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image, p
     
 # Function to generate images one by one and update gallery
 def generate_images(color, gs, steps, img, num_outputs, current_state, progress=gr.Progress(track_tqdm=True)):
-    progress = gr.Progress()
+
     # Clear the gallery if we're starting a new generation
-    current_images = current_state
+    current_images = []
 
     for i in progress.tqdm(range(num_outputs)):
         progress(i/num_outputs, f"Generating image {i+1}/{num_outputs}")
