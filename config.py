@@ -24,7 +24,7 @@ else:
 
 PROMPT = """
 
-A photorealistic portrait of a 23-year-old male model from Canada in a tailored navy suit with a matching tie(tie is must)
+A photorealistic portrait of a 23-year-old male model from Canada in a tailored navy suit with a neatly knotted necktie
 He stands confidently against a light gray studio backdrop, illuminated by soft, diffused lighting that highlights the suit's texture and fit. 
 The image is captured in a medium shot, 8K HDR, showcasing the refined elegance of his attire.
 
@@ -66,54 +66,23 @@ PROMPT4 = """
 
 NPROMPT = """
 
-(worst quality, low quality, normal quality, lowres, low resolution, blurry, unfocused:1.4), 
-(unrealistic, artistic style, illustration, cartoon, anime, painting, drawing, sketch, digital art:1.3),
-(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing:1.2),
-(deformed, distorted, disfigured:1.3), (low quality anatomy, bad anatomy, bad proportions, extra limbs, bad limb proportions:1.3),
+(worst quality, low quality, normal quality:1.4), (lowres, blurry, unfocused:1.3), 
+(unrealistic, cartoon, anime, painting, drawing, sketch, digital art:1.4), 
+(deformed iris, deformed pupils, semi-realistic, 3d render:1.3), 
+(deformed, distorted, disfigured:1.4), (bad anatomy, extra limbs, mutated hands, hands:1.4), 
+text, watermark, logo, signature, jpeg artifacts, chromatic aberration, 
+(out of frame:1.2), (poorly drawn face, asymmetrical features:1.3), 
+(grain, noise, film grain, motion blur:1.2), (anatomical errors, proportion issues:1.4), 
+(asymmetrical shoulders, stretched torso, compressed limbs:1.3), 
+(casual clothing, wrinkled fabric, unprofessional attire:1.4), 
+(messy hair, heavy makeup, sunglasses, hat, bow tie:1.3), 
+(cluttered background, outdoor setting, complex environment:1.4), 
+(harsh lighting, overexposed, lens flare, uneven shadows:1.3), 
+(side profile, extreme angles, tilted posture:1.4), 
+(crossed arms, casual stance, exaggerated expressions:1.3), 
+(over-edited, oversaturated, artificial contrast:1.2), 
+easynegative, bad-image-v2, bad-hands-5, ng_deepnegative_v1_75t, bad_prompt
 
-text, watermark, logo, signature, 
-jpeg artifacts, chromatic aberration, 
-out of frame, poorly drawn face, 
-poorly drawn hands, mutated hands, 
-blurry background, motion blur,
-grain, noise artifacts, film grain,
-
-anatomical errors, proportion issues:1.4,
-asymmetrical body, uneven shoulders,
-stretched torso, compressed limbs,
-distorted facial features, unnatural body pose:1.3,
-
-unprofessional elements:1.3,
-casual clothing, wrinkled suit,
-messy hair, heavy makeup,
-sunglasses, hat, accessories,
-bow tie, flashy tie patterns,
-distracting jewelry:1.2,
-
-environment issues:1.2,
-cluttered background,
-busy patterns, textured backdrop,
-outdoor setting, complex environment,
-harsh lighting, overexposed,
-lens flare, heavy shadows,
-uneven lighting:1.3,
-
-body positioning issues:1.4,
-side profile, extreme angles,
-tilted posture, leaning pose,
-unnatural hand positions,
-crossed arms, casual stance,
-exaggerated expressions:1.3,
-
-post-processing artifacts:1.2,
-over-edited, over-sharpened,
-heavy filters, unrealistic HDR,
-oversaturated colors, 
-artificial contrast:1.2,
-
-(bad_prompt_version2:0.8), easynegative, (bad-hands-5:0.8), (bad-image-v2-39000:0.8), 
-ng_deepnegative_v1_75t, (bad_prompt:0.8), (bad-artist-anime:0.8), bad-artist, bad_prompt, 
-(artist name, signature, watermark:1.4)
 
 """
 

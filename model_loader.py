@@ -245,9 +245,6 @@ def load_model_with_lora():
         algorithm_type="dpmsolver++",
         solver_type="midpoint",
         use_karras_sigmas=True,
-        # Additional parameters
-        lambda_min_clipped=-float("inf"),
-        variance_type="learned_range"
     )
     print("Model loaded successfully.")
 
