@@ -7,9 +7,10 @@ from model_loader import load_model_with_lora
 from image_preprocessing import segment_and_refine_mask
 import gradio as gr
 from config import PROMPT, NPROMPT
+from utlis import update_prompt
 
 # Function to generate an image using the model with LoRA
-def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
+def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image, age, gender):
     try:
 
         print(f"Generating images with -  guidance scale: {guidance_scale}, and steps: {num_steps}.")
@@ -24,10 +25,12 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
 
         # Generate mask once and reuse for all generations
         mask = segment_and_refine_mask(input_image)
+        # Get the updated prompt based on age and gender
+        current_prompt = update_prompt(age, gender)
 
         with torch.no_grad():
             image = pipeline(
-                prompt=PROMPT, 
+                prompt=current_prompt, 
                 negative_prompt=NPROMPT, 
                 guidance_scale=guidance_scale,
                 num_inference_steps=num_steps,
@@ -42,7 +45,7 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
         raise Exception(f"Error generating images: {e}")
     
 # Function to generate images one by one and update gallery
-def generate_images(prompt, color, gs, steps, img, num_outputs, progress=gr.Progress(track_tqdm=True)):
+def generate_images(color, age, gender, gs, steps, img, num_outputs, progress=gr.Progress(track_tqdm=True)):
     yield []
     current_images = []  # Start fresh every time
 

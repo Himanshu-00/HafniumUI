@@ -1,11 +1,15 @@
-from pipeline import generate_images
 from config import PROMPT
 
+def update_prompt(age, gender):
 
-#Prompt Handler
-def prompt_handler(gender, age, color_picker, guidance_scale, steps, input_image, num_outputs):
-    # Replace placeholders in prompt
-    prompt = PROMPT.replace("[Age]", str(age)) \
-                         .replace("[Gender]", gender) \
-                    
-    return generate_images(prompt, color_picker, guidance_scale, steps, input_image, num_outputs)
+    # Map the gender selection to male/female
+    gender_map = {
+        "Man": "male",
+        "Woman": "female"
+    }
+    
+    # Replace the placeholders in the prompt
+    updated_prompt = PROMPT.replace("[Age]", str(age))
+    updated_prompt = updated_prompt.replace("[Gender]", gender_map[gender])
+    
+    return updated_prompt
