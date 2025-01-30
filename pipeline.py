@@ -9,7 +9,7 @@ import gradio as gr
 from config import PROMPT, NPROMPT
 
 # Function to generate an image using the model with LoRA
-def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image, progress=gr.Progress()):
+def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
     try:
 
         print(f"Generating images with -  guidance scale: {guidance_scale}, and steps: {num_steps}.")
