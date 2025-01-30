@@ -1,6 +1,6 @@
 #gradio_interface.py
 import gradio as gr
-from pipeline import generate_images
+from utlis import generate_images
 from main import prompt_handler
 
 def create_gradio_interface(pipeline_with_lora):
