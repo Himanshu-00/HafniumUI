@@ -1,7 +1,6 @@
 #gradio_interface.py
 import gradio as gr
-from utlis import generate_images
-from main import prompt_handler
+from utlis import prompt_handler
 
 def create_gradio_interface(pipeline_with_lora):
     theme = gr.themes.Soft(
