@@ -1,7 +1,6 @@
 #gradio_interface.py
 import gradio as gr
 from pipeline import generate_images
-from config import NPROMPT
 from main import prompt_handler
 
 def create_gradio_interface(pipeline_with_lora):
@@ -32,25 +31,23 @@ def create_gradio_interface(pipeline_with_lora):
                     value="Navy Blue (#000080)",  # Set default value to Blue
                     interactive=True
                 )
-
+                
+                # Slider and Selector for age & gender
                 with gr.Row():
-                    # Gender selection
                     gender = gr.Radio(
                         choices=["Man", "Woman"],
                         value="Man",
                         interactive=True
                     )
                     
-                    # Age slider
                     age = gr.Slider(
-                        minimum=10,
+                        minimum=18,
                         maximum=100,
                         value=20,
                         step=1,
                         label="Age",
                         interactive=True
                     )
-
                 
                 # Slider for guidance scale and steps
                 with gr.Row():
@@ -78,7 +75,7 @@ def create_gradio_interface(pipeline_with_lora):
             # Button functionality
             generate_btn.click(
                 fn=prompt_handler,
-                inputs=[age, gender, color_picker, guidance_scale, steps, input_image, num_outputs],
+                inputs=[color_picker, guidance_scale, steps, input_image, num_outputs, age, gender],
                 outputs=output_image,
                 show_progress=True
             )
