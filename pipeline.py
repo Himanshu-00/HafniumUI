@@ -119,6 +119,25 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image, p
     except Exception as e:
         raise Exception(f"Error generating images: {e}")
 
+# Function to generate images one by one and update gallery
+def generate_images(color, gs, steps, img, num_outputs, progress=gr.Progress(track_tqdm=True)):
+    yield []
+    current_images = []  # Start fresh every time
+
+    for i in progress.tqdm(range(num_outputs)):
+        progress(i/num_outputs, f"Generating image {i+1}/{num_outputs}")
+        
+        new_image = generate_image_with_lora(
+            pipeline_with_lora,
+            guidance_scale=gs,
+            num_steps=steps,
+            input_image=img
+        )
+        
+        current_images.append((new_image, f"Generated Image {i+1}/{num_outputs}"))
+        yield current_images
+
+
 
 # Load the model with LoRA
 pipeline_with_lora = load_model_with_lora()
