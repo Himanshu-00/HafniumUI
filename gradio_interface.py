@@ -31,25 +31,6 @@ def create_gradio_interface(pipeline_with_lora):
                     value="Navy Blue (#000080)",  # Set default value to Blue
                     interactive=True
                 )
-
-                with gr.Row():
-                    # Add age slider
-                    age_slider = gr.Slider(
-                        minimum=18,
-                        maximum=70,
-                        value=25,
-                        step=1,
-                        label="Age",
-                        interactive=True
-                    )
-                    
-                    # Add gender selection
-                    gender_radio = gr.Radio(
-                        choices=["Man", "Woman"],
-                        label="Select",
-                        value="Man",
-                        interactive=True
-                    )
                 
                 # Slider for guidance scale and steps
                 with gr.Row():
@@ -77,7 +58,7 @@ def create_gradio_interface(pipeline_with_lora):
             # Button functionality
             generate_btn.click(
                 fn=generate_images,
-                inputs=[color_picker, guidance_scale, steps, input_image, num_outputs, age_slider, gender_radio],
+                inputs=[color_picker, guidance_scale, steps, input_image, num_outputs],
                 outputs=output_image,
                 show_progress=True
             )
