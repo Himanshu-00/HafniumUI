@@ -66,20 +66,54 @@ PROMPT4 = """
 
 NPROMPT = """
 
-(deformed iris, deformed pupils, deformed hands:1.3), 
-(asymmetrical eyes, unnatural facial proportions:1.2), (poor posture, slouching shoulders:1.1), 
-(improper suit tailoring, wrinkled fabric:1.2), (low resolution, blurry, pixelated:1.3),
-(cartoonish rendering, 3D model, drawing:1.4), (harsh lighting, overexposed:1.1), 
-(busy background, cluttered environment:1.2), (unprofessional appearance, casual clothing:1.2), 
-(makeup, styled hair, accessories:1.1), (bowtie, patterned tie, wide tie:1.3), (unnatural jawline, facial distortion:1.2), 
-(stretched limbs, compressed torso:1.3), (awkward hand position, missing fingers:1.4), (body tilt, angled posture:1.1), 
-(shadow artifacts, rendering glitches:1.1)
+(worst quality, low quality, normal quality, lowres, low resolution, blurry, unfocused:1.4), 
+(unrealistic, artistic style, illustration, cartoon, anime, painting, drawing, sketch, digital art:1.3),
+(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing:1.2),
+(deformed, distorted, disfigured:1.3), (low quality anatomy, bad anatomy, bad proportions, extra limbs, bad limb proportions:1.3),
+
+text, watermark, logo, signature, 
+jpeg artifacts, chromatic aberration, 
+out of frame, poorly drawn face, 
+poorly drawn hands, mutated hands, 
+blurry background, motion blur,
+grain, noise artifacts, film grain,
+
+anatomical errors, proportion issues:1.4,
+asymmetrical body, uneven shoulders,
+stretched torso, compressed limbs,
+distorted facial features, unnatural body pose:1.3,
+
+unprofessional elements:1.3,
+casual clothing, wrinkled suit,
+messy hair, heavy makeup,
+sunglasses, hat, accessories,
+bow tie, flashy tie patterns,
+distracting jewelry:1.2,
+
+environment issues:1.2,
+cluttered background,
+busy patterns, textured backdrop,
+outdoor setting, complex environment,
+harsh lighting, overexposed,
+lens flare, heavy shadows,
+uneven lighting:1.3,
+
+body positioning issues:1.4,
+side profile, extreme angles,
+tilted posture, leaning pose,
+unnatural hand positions,
+crossed arms, casual stance,
+exaggerated expressions:1.3,
+
+post-processing artifacts:1.2,
+over-edited, over-sharpened,
+heavy filters, unrealistic HDR,
+oversaturated colors, 
+artificial contrast:1.2,
+
+(bad_prompt_version2:0.8), easynegative, (bad-hands-5:0.8), (bad-image-v2-39000:0.8), 
+ng_deepnegative_v1_75t, (bad_prompt:0.8), (bad-artist-anime:0.8), bad-artist, bad_prompt, 
+(artist name, signature, watermark:1.4)
 
 """
 
-
-
-SEED = 42
-DENOISING_STRENGTH = 0.8
-LORA_ALPHA = 0.85
-LORA_SCALE = 0.75
