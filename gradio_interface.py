@@ -74,7 +74,7 @@ def create_gradio_interface(pipeline_with_lora):
             # Button functionality
             generate_btn.click(
                 fn=prompt_handler,
-                inputs=[color_picker, guidance_scale, steps, input_image, num_outputs, age, gender],
+                inputs=[age, gender, color_picker, guidance_scale, steps, input_image, num_outputs],
                 outputs=output_image,
                 show_progress=True
             )

@@ -42,7 +42,7 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
         raise Exception(f"Error generating images: {e}")
     
 # Function to generate images one by one and update gallery
-def generate_images(color, gs, steps, img, num_outputs, progress=gr.Progress(track_tqdm=True)):
+def generate_images(age, gender, color, gs, steps, img, num_outputs, progress=gr.Progress(track_tqdm=True)):
     yield []
     current_images = []  # Start fresh every time
 
