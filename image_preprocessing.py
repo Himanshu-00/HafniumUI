@@ -56,25 +56,19 @@ def refine_mask_with_bounding_box(image, mask, yolo_results):
         box = yolo_results[0].boxes[0]
         x1, y1, x2, y2 = map(int, box.xyxy[0])
 
-        margin_top = 270
-        margin_bottom = 30
-        margin_left = 60
-        margin_right = 60
+        margin_top = int(0.12 * mask.height)
+        margin_bottom = int(0.03 * mask.height)
 
         # Apply margin adjustments
         y1 = max(0, y1 - margin_top)
         y2 = min(mask.height, y2 + margin_bottom)
-        x1 = max(0, x1 - margin_left)
-        x2 = min(mask.width, x2 + margin_right)
 
-        # Create the mask and keep the area above the bounding box as white, below as black
+
+        # Create the mask 
         mask_array = np.array(mask)
 
         # Set everything below the bounding box to black (0)
-        mask_array[y2:, :] = 0  # Below the bounding box
-
-        # Set everything above the bounding box to white (255)
-        mask_array[:y1, :] = 255  # Above the bounding box
+        mask_array[y2:, :] = 0 
 
         # Convert the modified mask array back to an Image object
         refined_mask = Image.fromarray(mask_array, mode="L")
