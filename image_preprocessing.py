@@ -57,7 +57,7 @@ def refine_mask_with_bounding_box(image, mask, yolo_results):
         x1, y1, x2, y2 = map(int, box.xyxy[0])
 
         margin_top = int(0.12 * mask.height)
-        margin_bottom = int(0.03 * mask.height)
+        margin_bottom = int(0.01 * mask.height)
 
         # Apply margin adjustments
         y1 = max(0, y1 - margin_top)
