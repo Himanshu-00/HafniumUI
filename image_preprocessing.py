@@ -89,3 +89,5 @@ def refine_mask_with_bounding_box(image, mask, yolo_results):
     else:
         print("No face detected by YOLO.")
         return mask  # Return the original mask if no face is detected.
+
+
