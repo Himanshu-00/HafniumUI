@@ -86,3 +86,6 @@ easynegative, bad-image-v2, bad-hands-5, ng_deepnegative_v1_75t, bad_prompt
 
 """
 
+
+# Add to config.py
+UPSCALER_MODEL = "stabilityai/sd-x2-latent-upscaler"

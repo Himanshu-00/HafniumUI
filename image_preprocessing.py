@@ -90,7 +90,6 @@
 #         print("No face detected by YOLO.")
 #         return mask  # Return the original mask if no face is detected.
 
-
 import os
 from PIL import Image, ImageDraw
 from ultralytics import YOLO
@@ -113,6 +112,12 @@ def save_debug_image(image, name):
     file_path = os.path.join(DEBUG_IMAGE, name)
     image.save(file_path)
     print(f"Debug image saved: {file_path}")
+
+import os
+import numpy as np
+from PIL import Image, ImageDraw
+from ultralytics import YOLO
+from rembg import remove
 
 def ensure_image_consistency(image, target_size=(1024, 1024), aspect_ratio='center_crop'):
     """
@@ -218,5 +223,6 @@ def refine_mask_with_bounding_box(image, mask, yolo_results):
     else:
         print("No face detected by YOLO.")
         return mask  # Return the original mask if no face is detected.
+
 
 
