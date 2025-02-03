@@ -4,7 +4,7 @@ import torch
 from PIL import Image, ImageDraw
 import numpy as np
 from model_loader import load_model_with_lora
-from image_preprocessing import segment_and_refine_mask
+# from image_preprocessing import segment_and_refine_mask
 import gradio as gr
 from config import PROMPT, NPROMPT
 
@@ -22,9 +22,7 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
         else:
             raise Exception("Invalid image format. Please provide a valid image.")
 
-        # Generate mask once and reuse for all generations
-        mask = segment_and_refine_mask(input_image)
-
+    
         with torch.no_grad():
             image = pipeline(
                 prompt=PROMPT, 
@@ -32,7 +30,6 @@ def generate_image_with_lora(pipeline, guidance_scale, num_steps, input_image):
                 guidance_scale=guidance_scale,
                 num_inference_steps=num_steps,
                 image=input_image,
-                mask_image=mask
             ).images[0]
             
         print(f"Successfully generated images.")    

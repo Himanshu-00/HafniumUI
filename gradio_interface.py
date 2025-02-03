@@ -17,7 +17,7 @@ def create_gradio_interface(pipeline_with_lora):
         with gr.Row():
             # Left side column with input_image, color selection, guidance_scale, and steps
             with gr.Column():
-                input_image = gr.Image(label="Input Image", type="pil")  # Remove tool editor and set type to 'pil'
+                input_image = gr.Image(label="Input Image", tool="editor", type="pil")  # Remove tool editor and set type to 'pil'
                 
                 # Add more color options for suit colors with Charcoal as the default
                 color_picker = gr.Radio(
