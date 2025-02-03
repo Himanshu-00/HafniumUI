@@ -24,7 +24,7 @@ else:
 
 PROMPT = """
 
-A photorealistic portrait of a [Age]-year-old [Gender] model from Canada in a tailored navy suit with a neatly knotted necktie.(Necktie is Must!!)
+A photorealistic portrait of a [Age]-year-old [Gender] model from Canada in a tailored black suit with a neatly knotted necktie.(Necktie is Must!!)
 He stands confidently against a light gray studio backdrop, illuminated by soft, diffused lighting that highlights the suit's texture and fit. 
 The image is captured in a medium shot, 8K HDR, showcasing the refined elegance of his attire.
 
@@ -85,7 +85,3 @@ easynegative, bad-image-v2, bad-hands-5, ng_deepnegative_v1_75t, bad_prompt
 
 
 """
-
-
-# Add to config.py
-UPSCALER_MODEL = "stabilityai/sd-x2-latent-upscaler"
