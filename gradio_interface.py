@@ -72,7 +72,7 @@ from pipeline import generate_images
 from config import NPROMPT
 
 def create_gradio_interface(pipeline_with_lora):
-    with gr.Blocks() as HafniumUI:
+    with gr.Blocks(queue=True) as HafniumUI:
         gr.Markdown("# HafniumUI")
         
         with gr.Row():
