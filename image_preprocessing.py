@@ -56,12 +56,18 @@ def refine_mask_with_bounding_box(image, mask, yolo_results):
         box = yolo_results[0].boxes[0]
         x1, y1, x2, y2 = map(int, box.xyxy[0])
 
-        margin_top = int(0.05 * mask.height)
-        margin_bottom = int(0.01 * mask.height)
+        # margin_top = int(0.05 * mask.height)
+        # margin_bottom = int(0.01 * mask.height)
 
-        # Apply margin adjustments
-        y1 = max(0, y1 - margin_top)
-        y2 = min(mask.height, y2 + margin_bottom)
+        # # Apply margin adjustments
+        # y1 = max(0, y1 - margin_top)
+        # y2 = min(mask.height, y2 + margin_bottom)
+
+        # Tighten vertical bounds, focusing strictly on face
+        face_height = y2 - y1
+        y1 += int(face_height * 0.1)  # Shift top down slightly
+        y2 -= int(face_height * 0.3)  # Crop bottom more aggressively
+
 
 
         # Create the mask 
